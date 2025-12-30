@@ -33,7 +33,7 @@ export function CoupleScreen() {
           <Heart className="w-8 h-8 text-couple" />
         </motion.div>
         <h1 className="text-3xl font-display font-bold gradient-text mb-2">
-          Couple Mode
+          Sync Mode
         </h1>
         <p className="text-muted-foreground">
           Focus together, grow together 💕

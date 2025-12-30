@@ -10,7 +10,7 @@
 @import '@fontsource/inter/500.css';
 @import '@fontsource/inter/600.css';
 
-/* FocusOS Design System - Cute Couple Mode Theme */
+/* FocusOS Design System - Cute Sync Mode Theme */
 
 @layer base {
   :root {
@@ -62,7 +62,7 @@
     --study: 160 70% 45%;
     --study-glow: 160 70% 35%;
 
-    /* Couple Mode Colors */
+    /* Sync Mode Colors */
     --couple: 340 75% 65%;
     --couple-glow: 340 80% 75%;
     --partner: 280 60% 60%;
@@ -188,7 +188,7 @@
     }
   }
 
-  /* Heartbeat animation for couple mode */
+  /* Heartbeat animation for sync mode */
   .heartbeat {
     animation: heartbeat 1.5s ease-in-out infinite;
   }

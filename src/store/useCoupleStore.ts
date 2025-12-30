@@ -32,7 +32,7 @@ export interface DistractionAlert {
 export type StudyTogetherState = 'idle' | 'invited' | 'waiting' | 'active' | 'break';
 
 interface CoupleState {
-  // Couple Mode
+  // Sync Mode
   isCoupleMode: boolean;
   linkCode: string | null;
   isConnected: boolean;
