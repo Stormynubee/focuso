@@ -1,12 +1,17 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Heart, Users } from 'lucide-react';
+import { Heart, Users, Settings } from 'lucide-react';
 import { CoupleModeToggle } from '@/components/couple/CoupleModeToggle';
 import { PartnerStatusWidget } from '@/components/couple/PartnerStatus';
 import { CoupleChat } from '@/components/couple/CoupleChat';
+import { CoupleSettings } from '@/components/couple/CoupleSettings';
+import { StudyTogetherPomodoro } from '@/components/couple/StudyTogetherPomodoro';
 import { useCoupleStore } from '@/store/useCoupleStore';
+import { Button } from '@/components/ui/button';
 
 export function CoupleScreen() {
   const { isCoupleMode, isConnected } = useCoupleStore();
+  const [showSettings, setShowSettings] = useState(false);
 
   return (
     <motion.div
@@ -28,7 +33,20 @@ export function CoupleScreen() {
         <p className="text-muted-foreground">
           Focus together, grow together 💕
         </p>
+        {isConnected && (
+          <Button variant="ghost" size="sm" onClick={() => setShowSettings(!showSettings)} className="mt-2 gap-2">
+            <Settings className="w-4 h-4" />
+            {showSettings ? 'Hide Settings' : 'Settings'}
+          </Button>
+        )}
       </div>
+
+      {/* Settings Panel */}
+      {showSettings && isConnected && (
+        <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}>
+          <CoupleSettings />
+        </motion.div>
+      )}
 
       {/* Connection Status */}
       <CoupleModeToggle />
@@ -44,9 +62,19 @@ export function CoupleScreen() {
         </motion.div>
       )}
 
+      {/* Study Together Pomodoro */}
+      {isConnected && (
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+          <StudyTogetherPomodoro />
+        </motion.div>
+      )}
+
       {/* Couple Chat (when connected) */}
       {isConnected && (
-        <motion.div
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
+          <CoupleChat />
+        </motion.div>
+      )}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
