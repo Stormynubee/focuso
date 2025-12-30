@@ -62,6 +62,10 @@ interface CoupleState {
     customMessages: string[];
     enabledApps: string[];
     treatYouTubeAsEducational: boolean;
+    // Account-aware detection settings
+    accountAwareDetection: boolean;
+    showAccountNameToPartner: boolean;
+    youtubeNotifyOnly: boolean; // Only notify, never interrupt
   };
   
   // Actions
@@ -136,6 +140,9 @@ export const useCoupleStore = create<CoupleState>()(
         customMessages: DEFAULT_MESSAGES,
         enabledApps: DEFAULT_ENABLED_APPS,
         treatYouTubeAsEducational: false,
+        accountAwareDetection: true,
+        showAccountNameToPartner: true,
+        youtubeNotifyOnly: true,
       },
 
       enableCoupleMode: () => set({ isCoupleMode: true }),
