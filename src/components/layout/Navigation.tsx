@@ -9,7 +9,8 @@ import {
   X,
   Sparkles,
   Users,
-  Heart
+  Heart,
+  ListTodo
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -21,6 +22,7 @@ interface NavigationProps {
 const navItems = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'focus', label: 'Focus', icon: Timer },
+  { id: 'tasks', label: 'Tasks', icon: ListTodo },
   { id: 'couple', label: 'Couple', icon: Heart },
   { id: 'community', label: 'Community', icon: Users },
   { id: 'analytics', label: 'Analytics', icon: BarChart3 },

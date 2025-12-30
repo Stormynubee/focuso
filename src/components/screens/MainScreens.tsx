@@ -6,6 +6,7 @@ import { DistractionTracker } from '@/components/distraction/DistractionTracker'
 import { WeeklyChart } from '@/components/dashboard/WeeklyChart';
 import { StudyGoals } from '@/components/goals/StudyGoals';
 import { SpotifyPlayer } from '@/components/music/SpotifyPlayer';
+import { TodoList } from '@/components/todos/TodoList';
 
 export function DashboardScreen() {
   return (
@@ -23,8 +24,10 @@ export function DashboardScreen() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <StudyGoals />
-        <SpotifyPlayer />
+        <TodoList />
       </div>
+
+      <SpotifyPlayer />
     </motion.div>
   );
 }
