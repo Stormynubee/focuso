@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Pause, RotateCcw, Volume2, VolumeX, Settings, X, Minimize2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { useAppStore } from '@/store/useAppStore';
 import { useNotifications } from '@/hooks/useNotifications';
@@ -420,6 +421,7 @@ export function PomodoroTimer() {
               </div>
 
               {/* Presets */}
+              <p className="text-xs text-muted-foreground mb-2">Quick presets</p>
               <div className="flex gap-2 mb-4">
                 {PRESET_TIMES.map((preset) => (
                   <motion.button
@@ -438,33 +440,65 @@ export function PomodoroTimer() {
                 ))}
               </div>
 
-              {/* Focus time slider */}
+              {/* Custom time input */}
+              <p className="text-xs text-muted-foreground mb-2">Or set custom times</p>
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                  <Label className="text-sm flex items-center gap-2 mb-2">
+                    <span className="w-2 h-2 rounded-full bg-primary" />
+                    Focus (min)
+                  </Label>
+                  <Input
+                    type="number"
+                    value={localFocusTime}
+                    onChange={(e) => setLocalFocusTime(Math.max(1, Math.min(300, parseInt(e.target.value) || 1)))}
+                    min={1}
+                    max={300}
+                    className="bg-secondary/50"
+                  />
+                </div>
+                <div>
+                  <Label className="text-sm flex items-center gap-2 mb-2">
+                    <span className="w-2 h-2 rounded-full bg-success" />
+                    Break (min)
+                  </Label>
+                  <Input
+                    type="number"
+                    value={localBreakTime}
+                    onChange={(e) => setLocalBreakTime(Math.max(1, Math.min(60, parseInt(e.target.value) || 1)))}
+                    min={1}
+                    max={60}
+                    className="bg-secondary/50"
+                  />
+                </div>
+              </div>
+
+              {/* Slider for quick adjustment */}
               <div className="space-y-3 mb-4">
                 <div className="flex items-center justify-between">
-                  <Label className="text-sm">Focus Time</Label>
-                  <span className="text-sm font-medium text-primary">{localFocusTime} min</span>
+                  <Label className="text-xs text-muted-foreground">Focus</Label>
+                  <span className="text-xs text-primary">{localFocusTime}m</span>
                 </div>
                 <Slider
                   value={[localFocusTime]}
                   onValueChange={([value]) => setLocalFocusTime(value)}
-                  min={5}
-                  max={120}
-                  step={5}
+                  min={1}
+                  max={180}
+                  step={1}
                   className="w-full"
                 />
               </div>
 
-              {/* Break time slider */}
               <div className="space-y-3 mb-4">
                 <div className="flex items-center justify-between">
-                  <Label className="text-sm">Break Time</Label>
-                  <span className="text-sm font-medium text-success">{localBreakTime} min</span>
+                  <Label className="text-xs text-muted-foreground">Break</Label>
+                  <span className="text-xs text-success">{localBreakTime}m</span>
                 </div>
                 <Slider
                   value={[localBreakTime]}
                   onValueChange={([value]) => setLocalBreakTime(value)}
                   min={1}
-                  max={30}
+                  max={60}
                   step={1}
                   className="w-full"
                 />
