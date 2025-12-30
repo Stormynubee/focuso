@@ -1,22 +1,19 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Heart, Users, Settings } from 'lucide-react';
-import { CoupleModeToggle } from '@/components/couple/CoupleModeToggle';
-import { PartnerStatusWidget } from '@/components/couple/PartnerStatus';
+import { RealSyncModeToggle } from '@/components/couple/RealSyncModeToggle';
+import { RealPartnerStatus } from '@/components/couple/RealPartnerStatus';
 import { CoupleChat } from '@/components/couple/CoupleChat';
 import { CoupleSettings } from '@/components/couple/CoupleSettings';
-import { StudyTogetherPomodoro } from '@/components/couple/StudyTogetherPomodoro';
+import { RealStudyTogetherPomodoro } from '@/components/couple/RealStudyTogetherPomodoro';
 import { AutoDetectionStatus } from '@/components/distraction/AutoDetectionStatus';
 import { DistractionTestPanel } from '@/components/distraction/DistractionTestPanel';
 import { SyncModeCats } from '@/components/cat/CatCompanion';
-import { useCoupleStore } from '@/store/useCoupleStore';
-import { useDistractionMonitor } from '@/hooks/useDistractionMonitor';
+import { useSyncMode } from '@/hooks/useSyncMode';
 import { Button } from '@/components/ui/button';
 
 export function CoupleScreen() {
-  // Initialize the distraction monitor when CoupleScreen mounts
-  useDistractionMonitor();
-  const { isCoupleMode, isConnected } = useCoupleStore();
+  const { isSyncModeEnabled, isConnected, partner } = useSyncMode();
   const [showSettings, setShowSettings] = useState(false);
 
   return (
@@ -58,24 +55,24 @@ export function CoupleScreen() {
         </motion.div>
       )}
 
-      {/* Connection Status */}
-      <CoupleModeToggle />
+      {/* Connection Status - Now using REAL sync */}
+      <RealSyncModeToggle />
 
-      {/* Partner Status (when connected) */}
-      {isConnected && (
+      {/* Partner Status (when connected) - Now using REAL data */}
+      {isConnected && partner && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <PartnerStatusWidget />
+          <RealPartnerStatus partner={partner} />
         </motion.div>
       )}
 
-      {/* Study Together Pomodoro */}
+      {/* Study Together Pomodoro - Now using REAL sync */}
       {isConnected && (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-          <StudyTogetherPomodoro />
+          <RealStudyTogetherPomodoro />
         </motion.div>
       )}
 
@@ -101,7 +98,7 @@ export function CoupleScreen() {
       )}
 
       {/* Tips when not connected */}
-      {isCoupleMode && !isConnected && (
+      {isSyncModeEnabled && !isConnected && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -116,8 +113,8 @@ export function CoupleScreen() {
             <li>💕 One partner generates a link code</li>
             <li>📱 Share the code with your partner</li>
             <li>🔗 They enter it to connect</li>
-            <li>🫂 Get gentle reminders when distracted</li>
-            <li>📊 See each other's focus status</li>
+            <li>🫂 Get REAL notifications when distracted</li>
+            <li>📊 See each other's REAL focus status</li>
           </ul>
         </motion.div>
       )}

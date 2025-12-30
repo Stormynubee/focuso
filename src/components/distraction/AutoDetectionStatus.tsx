@@ -1,12 +1,12 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Wifi, WifiOff, Eye, Heart, Clock } from 'lucide-react';
-import { useDistractionMonitor } from '@/hooks/useDistractionMonitor';
-import { useCoupleStore } from '@/store/useCoupleStore';
+import { useRealDistractionMonitor } from '@/hooks/useRealDistractionMonitor';
+import { useSyncMode } from '@/hooks/useSyncMode';
 import { GlassCard } from '@/components/ui/GlassCard';
 
 export function AutoDetectionStatus() {
-  const { isMonitoring, lastDetection, canSendAlert } = useDistractionMonitor();
-  const { isConnected, partner, alertSettings, studyTogetherActive } = useCoupleStore();
+  const { isMonitoring, lastDetection, canSendAlert } = useRealDistractionMonitor();
+  const { isConnected, partner } = useSyncMode();
 
   if (!isConnected) return null;
 
@@ -32,15 +32,13 @@ export function AutoDetectionStatus() {
         </motion.div>
         <div className="flex-1">
           <p className="text-sm font-medium flex items-center gap-2">
-            Auto-Detection
-            {studyTogetherActive && (
-              <span className="px-2 py-0.5 rounded-full bg-couple/20 text-couple text-xs">
-                Enhanced
-              </span>
-            )}
+            Real-Time Detection
+            <span className="px-2 py-0.5 rounded-full bg-success/20 text-success text-xs">
+              REAL
+            </span>
           </p>
           <p className="text-xs text-muted-foreground">
-            {isMonitoring ? 'Monitoring active' : 'Not monitoring'}
+            {isMonitoring ? 'Connected & monitoring' : 'Not monitoring'}
           </p>
         </div>
       </div>
@@ -50,28 +48,30 @@ export function AutoDetectionStatus() {
         <div className="flex items-center justify-between p-2 rounded-lg bg-secondary/30">
           <span className="flex items-center gap-2 text-muted-foreground">
             <Eye className="w-3 h-3" />
-            Tracked Apps
+            Connection
           </span>
-          <span className="font-medium">{alertSettings.enabledApps.length}</span>
+          <span className={`font-medium ${isConnected ? 'text-success' : 'text-muted-foreground'}`}>
+            {isConnected ? 'Synced' : 'Disconnected'}
+          </span>
         </div>
 
         <div className="flex items-center justify-between p-2 rounded-lg bg-secondary/30">
           <span className="flex items-center gap-2 text-muted-foreground">
             <Heart className="w-3 h-3" />
-            Partner Alerts
+            Partner
           </span>
-          <span className={`font-medium ${alertSettings.enabled ? 'text-success' : 'text-muted-foreground'}`}>
-            {alertSettings.enabled ? 'On' : 'Off'}
+          <span className="font-medium text-couple">
+            {partner?.name || 'Not connected'}
           </span>
         </div>
 
         <div className="flex items-center justify-between p-2 rounded-lg bg-secondary/30">
           <span className="flex items-center gap-2 text-muted-foreground">
             <Clock className="w-3 h-3" />
-            Cooldown
+            Alert Status
           </span>
           <span className={`font-medium ${canSendAlert ? 'text-success' : 'text-warning'}`}>
-            {canSendAlert ? 'Ready' : `${alertSettings.cooldownMinutes}m cooldown`}
+            {canSendAlert ? 'Ready' : 'Cooldown'}
           </span>
         </div>
       </div>
@@ -85,22 +85,20 @@ export function AutoDetectionStatus() {
             exit={{ opacity: 0, y: -10 }}
             className="mt-3 p-3 rounded-xl bg-couple/10 border border-couple/20"
           >
-            <p className="text-xs text-muted-foreground mb-1">Last notification</p>
+            <p className="text-xs text-muted-foreground mb-1">Last REAL notification sent</p>
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium flex items-center gap-2">
                 {lastDetection.isYouTube ? '📺' : '📱'} {lastDetection.app}
-                {lastDetection.isYouTube && (
-                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/20 text-primary">
-                    neutral
-                  </span>
-                )}
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-success/20 text-success">
+                  sent
+                </span>
               </span>
               <span className="text-xs text-muted-foreground">
                 {formatTime(lastDetection.timestamp)}
               </span>
             </div>
             <p className="text-xs text-couple mt-1">
-              {partner?.name} was notified 💕
+              {partner?.name} received the notification 💕
             </p>
           </motion.div>
         )}
@@ -114,8 +112,8 @@ export function AutoDetectionStatus() {
         transition={{ delay: 0.3 }}
       >
         <p className="text-[10px] text-muted-foreground leading-relaxed">
-          💡 Detection works best when you browse within this app. 
-          For full app-level monitoring, install as a native app via Capacitor.
+          💡 This is REAL sync! When you trigger a detection, your partner receives 
+          an actual notification via the database in real-time.
         </p>
       </motion.div>
     </GlassCard>

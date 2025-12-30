@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Play, Zap, Youtube, Instagram, Facebook, Twitter, MessageSquare } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Zap, Youtube, Instagram, Facebook, Twitter, MessageSquare } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
-import { useDistractionMonitor } from '@/hooks/useDistractionMonitor';
-import { useCoupleStore } from '@/store/useCoupleStore';
+import { useRealDistractionMonitor } from '@/hooks/useRealDistractionMonitor';
+import { useSyncMode } from '@/hooks/useSyncMode';
 
 const TEST_APPS = [
   { name: 'YouTube', icon: Youtube, color: 'text-red-500' },
@@ -15,15 +14,15 @@ const TEST_APPS = [
 ];
 
 export function DistractionTestPanel() {
-  const { triggerDetection, canSendAlert, isMonitoring } = useDistractionMonitor();
-  const { isConnected, partner, alertSettings } = useCoupleStore();
+  const { triggerDetection, canSendAlert, isMonitoring } = useRealDistractionMonitor();
+  const { isConnected, partner } = useSyncMode();
   const [lastTriggered, setLastTriggered] = useState<string | null>(null);
 
   if (!isConnected) return null;
 
-  const handleTest = (appName: string) => {
+  const handleTest = async (appName: string) => {
     if (!canSendAlert) return;
-    triggerDetection(appName);
+    await triggerDetection(appName);
     setLastTriggered(appName);
     setTimeout(() => setLastTriggered(null), 2000);
   };
@@ -39,31 +38,28 @@ export function DistractionTestPanel() {
           <Zap className="w-4 h-4 text-warning" />
         </motion.div>
         <div>
-          <h4 className="text-sm font-medium">Test Detection</h4>
-          <p className="text-xs text-muted-foreground">Simulate app detection alerts</p>
+          <h4 className="text-sm font-medium">Test REAL Detection</h4>
+          <p className="text-xs text-muted-foreground">Send real alerts to your partner</p>
         </div>
       </div>
 
       <div className="grid grid-cols-5 gap-2 mb-3">
         {TEST_APPS.map(({ name, icon: Icon, color }) => {
-          const isEnabled = alertSettings.enabledApps.includes(name);
           const isTriggered = lastTriggered === name;
           
           return (
             <motion.button
               key={name}
               onClick={() => handleTest(name)}
-              disabled={!canSendAlert || !isEnabled}
+              disabled={!canSendAlert}
               className={`
                 p-3 rounded-xl flex flex-col items-center gap-1 transition-all
-                ${isEnabled 
-                  ? 'bg-secondary/50 hover:bg-secondary' 
-                  : 'bg-muted/20 opacity-50 cursor-not-allowed'
-                }
+                bg-secondary/50 hover:bg-secondary
+                ${!canSendAlert ? 'opacity-50 cursor-not-allowed' : ''}
                 ${isTriggered ? 'ring-2 ring-couple' : ''}
               `}
-              whileHover={isEnabled ? { scale: 1.05 } : {}}
-              whileTap={isEnabled ? { scale: 0.95 } : {}}
+              whileHover={canSendAlert ? { scale: 1.05 } : {}}
+              whileTap={canSendAlert ? { scale: 0.95 } : {}}
               animate={isTriggered ? { 
                 boxShadow: ['0 0 0 0 rgba(244, 114, 182, 0.6)', '0 0 20px 10px rgba(244, 114, 182, 0)', '0 0 0 0 rgba(244, 114, 182, 0)']
               } : {}}
@@ -84,8 +80,15 @@ export function DistractionTestPanel() {
       )}
 
       <p className="text-xs text-center text-muted-foreground mt-2">
-        Tap an app to send a test notification to {partner?.name} 💕
+        Tap an app to send a REAL notification to {partner?.name || 'your partner'} 💕
       </p>
+
+      {/* Debug info */}
+      <div className="mt-3 text-xs text-muted-foreground p-2 bg-secondary/30 rounded-lg font-mono">
+        <div>Monitoring: {isMonitoring ? 'Active' : 'Inactive'}</div>
+        <div>Can Alert: {canSendAlert ? 'Yes' : 'No (cooldown)'}</div>
+        <div>Partner: {partner?.id?.slice(0, 8) || 'None'}...</div>
+      </div>
     </GlassCard>
   );
 }
