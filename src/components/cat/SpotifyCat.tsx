@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Music, X, Play, Pause, SkipBack, SkipForward, ChevronDown, ChevronUp, Lock, Unlock, GripVertical } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -30,8 +30,12 @@ export function SpotifyCat() {
   } = useCatThemeStore();
   
   const [tracks, setTracks] = useState<SpotifyTrack[]>(() => {
-    const saved = localStorage.getItem('focusos-spotify');
-    return saved ? JSON.parse(saved) : [];
+    try {
+      const saved = localStorage.getItem('focusos-spotify');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
   });
   const [activeTrack, setActiveTrack] = useState<SpotifyTrack | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -42,19 +46,23 @@ export function SpotifyCat() {
   
   const containerRef = useRef<HTMLDivElement>(null);
   
-  const colors = CAT_COLORS[spotifyCatStyle];
+  const colors = CAT_COLORS[spotifyCatStyle] || CAT_COLORS.default;
   const animSpeed = animationIntensity === 'low' ? 1.5 : animationIntensity === 'medium' ? 1 : 0.6;
 
-  // Default position
-  const defaultPosition = { x: window.innerWidth - 320, y: window.innerHeight - 200 };
+  // Memoize default position to avoid recalculating on every render
+  const defaultPosition = useMemo(() => ({ 
+    x: typeof window !== 'undefined' ? Math.max(20, window.innerWidth - 320) : 20, 
+    y: typeof window !== 'undefined' ? Math.max(20, window.innerHeight - 200) : 20 
+  }), []);
+  
   const position = spotifyCatPosition || defaultPosition;
 
-  const saveTracks = (updatedTracks: SpotifyTrack[]) => {
+  const saveTracks = useCallback((updatedTracks: SpotifyTrack[]) => {
     setTracks(updatedTracks);
     localStorage.setItem('focusos-spotify', JSON.stringify(updatedTracks));
-  };
+  }, []);
 
-  const extractSpotifyId = (url: string): { id: string; type: 'track' | 'playlist' | 'album' } | null => {
+  const extractSpotifyId = useCallback((url: string): { id: string; type: 'track' | 'playlist' | 'album' } | null => {
     try {
       let type: 'track' | 'playlist' | 'album' = 'track';
       let id = '';
@@ -78,9 +86,9 @@ export function SpotifyCat() {
     } catch {
       return null;
     }
-  };
+  }, []);
 
-  const handleAddTrack = () => {
+  const handleAddTrack = useCallback(() => {
     const extracted = extractSpotifyId(newUrl);
     if (!extracted) return;
 
@@ -95,44 +103,46 @@ export function SpotifyCat() {
     setShowAddForm(false);
     setActiveTrack(newTrack);
     setIsPlaying(true);
-  };
+  }, [newUrl, tracks, saveTracks, extractSpotifyId]);
 
-  const handlePlayPause = () => {
+  const handlePlayPause = useCallback(() => {
     if (!activeTrack && tracks.length > 0) {
       setActiveTrack(tracks[0]);
       setIsPlaying(true);
     } else {
-      setIsPlaying(!isPlaying);
+      setIsPlaying(prev => !prev);
     }
-  };
+  }, [activeTrack, tracks]);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (!activeTrack || tracks.length === 0) return;
     const currentIndex = tracks.findIndex(t => t.id === activeTrack.id);
     const nextIndex = (currentIndex + 1) % tracks.length;
     setActiveTrack(tracks[nextIndex]);
     setIsPlaying(true);
-  };
+  }, [activeTrack, tracks]);
 
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     if (!activeTrack || tracks.length === 0) return;
     const currentIndex = tracks.findIndex(t => t.id === activeTrack.id);
     const prevIndex = currentIndex === 0 ? tracks.length - 1 : currentIndex - 1;
     setActiveTrack(tracks[prevIndex]);
     setIsPlaying(true);
-  };
+  }, [activeTrack, tracks]);
 
-  const getEmbedUrl = (track: SpotifyTrack) => {
+  const getEmbedUrl = useCallback((track: SpotifyTrack) => {
     return `https://open.spotify.com/embed/${track.type}/${track.id}?utm_source=generator&theme=0`;
-  };
+  }, []);
 
-  const handleDrag = (event: any, info: any) => {
+  // Only update position on drag end to avoid excessive state updates
+  const handleDragEnd = useCallback((event: any, info: any) => {
     if (spotifyCatLocked) return;
+    setIsDragging(false);
     setSpotifyCatPosition({
-      x: position.x + info.delta.x,
-      y: position.y + info.delta.y,
+      x: Math.max(0, Math.min(window.innerWidth - 300, position.x + info.offset.x)),
+      y: Math.max(0, Math.min(window.innerHeight - 100, position.y + info.offset.y)),
     });
-  };
+  }, [spotifyCatLocked, position, setSpotifyCatPosition]);
 
   if (!isEnabled || !spotifyCatEnabled) {
     return null;
@@ -222,9 +232,8 @@ export function SpotifyCat() {
         style={{ left: position.x, top: position.y }}
         drag={!spotifyCatLocked}
         dragMomentum={false}
-        onDrag={handleDrag}
         onDragStart={() => setIsDragging(true)}
-        onDragEnd={() => setIsDragging(false)}
+        onDragEnd={handleDragEnd}
         initial={{ opacity: 0, scale: 0.8, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
       >
@@ -250,9 +259,8 @@ export function SpotifyCat() {
       style={{ left: position.x, top: position.y }}
       drag={!spotifyCatLocked}
       dragMomentum={false}
-      onDrag={handleDrag}
       onDragStart={() => setIsDragging(true)}
-      onDragEnd={() => setIsDragging(false)}
+      onDragEnd={handleDragEnd}
       initial={{ opacity: 0, scale: 0.8, y: 20 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
     >

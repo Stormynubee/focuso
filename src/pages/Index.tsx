@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '@/store/useAppStore';
@@ -11,8 +11,6 @@ import { CommunityScreen } from '@/components/screens/CommunityScreen';
 import { CoupleScreen } from '@/components/screens/CoupleScreen';
 import { TasksScreen } from '@/components/screens/TasksScreen';
 import { SpotifyCat } from '@/components/cat/SpotifyCat';
-import { CatCompanion } from '@/components/cat/CatCompanion';
-import { PeekingCat } from '@/components/cat/CatElements';
 import { PageCat } from '@/components/cat/PageCat';
 import { useStudyReminders } from '@/hooks/useStudyReminders';
 import { useAuth } from '@/hooks/useAuth';
@@ -87,7 +85,7 @@ const Index = () => {
           </motion.div>
         </AnimatePresence>
         
-        {/* Page-specific cat */}
+        {/* Page-specific cat - only shown when enabled */}
         <div className="fixed bottom-28 left-4 md:left-24 z-30">
           <PageCat page={getPageCatType() as any} />
         </div>
@@ -95,10 +93,6 @@ const Index = () => {
       
       {/* Draggable Spotify Cat (replaces SpotifyMiniPlayer) */}
       <SpotifyCat />
-      
-      {/* Cat Theme Companion */}
-      <CatCompanion position="corner" />
-      <PeekingCat position="bottom-left" />
     </div>
   );
 };
