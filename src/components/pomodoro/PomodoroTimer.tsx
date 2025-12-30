@@ -26,6 +26,7 @@ export function PomodoroTimer() {
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showFullscreenSettings, setShowFullscreenSettings] = useState(false);
   
   // Local settings state for editing
   const [localFocusTime, setLocalFocusTime] = useState(pomodoroSettings.focusTime);
@@ -220,15 +221,115 @@ export function PomodoroTimer() {
           />
         </div>
 
-        {/* Exit button */}
-        <motion.button
-          className="absolute top-6 right-6 p-3 rounded-full bg-secondary/50 hover:bg-secondary transition-colors"
-          onClick={() => setIsFullscreen(false)}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-        >
-          <Minimize2 className="w-6 h-6 text-muted-foreground" />
-        </motion.button>
+        {/* Top controls */}
+        <div className="absolute top-6 right-6 flex items-center gap-3">
+          <motion.button
+            className="p-3 rounded-full bg-secondary/50 hover:bg-secondary transition-colors"
+            onClick={() => setShowFullscreenSettings(!showFullscreenSettings)}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <Settings className="w-6 h-6 text-muted-foreground" />
+          </motion.button>
+          <motion.button
+            className="p-3 rounded-full bg-secondary/50 hover:bg-secondary transition-colors"
+            onClick={() => setIsFullscreen(false)}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <Minimize2 className="w-6 h-6 text-muted-foreground" />
+          </motion.button>
+        </div>
+
+        {/* Fullscreen Settings Panel */}
+        <AnimatePresence>
+          {showFullscreenSettings && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="absolute top-20 right-6 w-72 p-4 rounded-xl bg-secondary/80 backdrop-blur-xl border border-border/50"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="font-display font-semibold">Timer Settings</h4>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setShowFullscreenSettings(false)}
+                  className="w-8 h-8 rounded-full"
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+
+              {/* Presets */}
+              <p className="text-xs text-muted-foreground mb-2">Quick presets</p>
+              <div className="flex gap-2 mb-4">
+                {PRESET_TIMES.map((preset) => (
+                  <button
+                    key={preset.label}
+                    onClick={() => {
+                      setLocalFocusTime(preset.focus);
+                      setLocalBreakTime(preset.break);
+                    }}
+                    className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all ${
+                      localFocusTime === preset.focus && localBreakTime === preset.break
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-background/50 text-muted-foreground hover:bg-background hover:text-foreground'
+                    }`}
+                  >
+                    {preset.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Custom inputs */}
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                <div>
+                  <Label className="text-xs flex items-center gap-2 mb-1">
+                    <span className="w-2 h-2 rounded-full bg-primary" />
+                    Focus (min)
+                  </Label>
+                  <Input
+                    type="number"
+                    value={localFocusTime}
+                    onChange={(e) => setLocalFocusTime(Math.max(1, Math.min(300, parseInt(e.target.value) || 1)))}
+                    min={1}
+                    max={300}
+                    className="bg-background/50 h-9"
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs flex items-center gap-2 mb-1">
+                    <span className="w-2 h-2 rounded-full bg-success" />
+                    Break (min)
+                  </Label>
+                  <Input
+                    type="number"
+                    value={localBreakTime}
+                    onChange={(e) => setLocalBreakTime(Math.max(1, Math.min(60, parseInt(e.target.value) || 1)))}
+                    min={1}
+                    max={60}
+                    className="bg-background/50 h-9"
+                  />
+                </div>
+              </div>
+
+              <Button
+                onClick={() => {
+                  setPomodoroSettings({ focusTime: localFocusTime, breakTime: localBreakTime });
+                  if (state === 'idle' || state === 'paused') {
+                    setTimeLeft(localFocusTime * 60);
+                  }
+                  setShowFullscreenSettings(false);
+                }}
+                className="w-full"
+              >
+                Apply Settings
+              </Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Main timer */}
         <div className="relative">
@@ -256,6 +357,7 @@ export function PomodoroTimer() {
               strokeWidth={14}
               strokeLinecap="round"
               strokeDasharray={circumference}
+              style={{ strokeDashoffset: circumference }}
               animate={{ strokeDashoffset }}
               transition={{ duration: 0.5, ease: 'easeOut' }}
             />
@@ -269,6 +371,7 @@ export function PomodoroTimer() {
                 strokeWidth={6}
                 strokeLinecap="round"
                 strokeDasharray={circumference}
+                style={{ strokeDashoffset: circumference, filter: 'blur(6px)' }}
                 animate={{ 
                   strokeDashoffset,
                   opacity: [0.5, 1, 0.5],
@@ -277,7 +380,6 @@ export function PomodoroTimer() {
                   strokeDashoffset: { duration: 0.5, ease: 'easeOut' },
                   opacity: { duration: 2, repeat: Infinity },
                 }}
-                style={{ filter: 'blur(6px)' }}
               />
             )}
           </motion.svg>
