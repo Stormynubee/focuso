@@ -118,22 +118,39 @@ export function PomodoroTimer() {
   }, [isFullscreen]);
 
   const handleStart = () => {
+    console.log('handleStart called, current state:', state);
     if (state === 'idle' || state === 'paused') {
+      // Ensure timeLeft is valid
+      if (timeLeft <= 0) {
+        setTimeLeft(pomodoroSettings.focusTime * 60);
+      }
       setState('focus');
-      setIsFullscreen(true); // Enter fullscreen on start
+      setIsFullscreen(true);
     }
   };
 
   const handlePause = () => {
+    console.log('handlePause called, current state:', state);
     if (state === 'focus' || state === 'break') {
       setState('paused');
     }
   };
 
   const handleReset = () => {
+    console.log('handleReset called');
     setState('idle');
     setTimeLeft(pomodoroSettings.focusTime * 60);
     setIsFullscreen(false);
+  };
+
+  const handlePlayPauseClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    console.log('Play/Pause clicked, state:', state);
+    if (state === 'focus' || state === 'break') {
+      handlePause();
+    } else {
+      handleStart();
+    }
   };
 
   const handleSaveSettings = () => {
@@ -316,19 +333,17 @@ export function PomodoroTimer() {
             <RotateCcw className="w-6 h-6" />
           </Button>
 
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button
-              variant="glow"
-              onClick={state === 'focus' || state === 'break' ? handlePause : handleStart}
-              className="w-24 h-24 rounded-full"
-            >
-              {state === 'focus' || state === 'break' ? (
-                <Pause className="w-10 h-10" />
-              ) : (
-                <Play className="w-10 h-10 ml-1" />
-              )}
-            </Button>
-          </motion.div>
+          <Button
+            variant="glow"
+            onClick={handlePlayPauseClick}
+            className="w-24 h-24 rounded-full"
+          >
+            {state === 'focus' || state === 'break' ? (
+              <Pause className="w-10 h-10" />
+            ) : (
+              <Play className="w-10 h-10 ml-1" />
+            )}
+          </Button>
 
           <Button
             variant="ghost"
@@ -628,20 +643,18 @@ export function PomodoroTimer() {
           <RotateCcw className="w-5 h-5" />
         </Button>
 
-        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-          <Button
-            variant="glow"
-            size="lg"
-            onClick={state === 'focus' || state === 'break' ? handlePause : handleStart}
-            className="w-20 h-20 rounded-full"
-          >
-            {state === 'focus' || state === 'break' ? (
-              <Pause className="w-8 h-8" />
-            ) : (
-              <Play className="w-8 h-8 ml-1" />
-            )}
-          </Button>
-        </motion.div>
+        <Button
+          variant="glow"
+          size="lg"
+          onClick={handlePlayPauseClick}
+          className="w-20 h-20 rounded-full"
+        >
+          {state === 'focus' || state === 'break' ? (
+            <Pause className="w-8 h-8" />
+          ) : (
+            <Play className="w-8 h-8 ml-1" />
+          )}
+        </Button>
 
         <Button
           variant="ghost"
