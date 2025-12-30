@@ -1,6 +1,6 @@
-import { useState, useEffect, forwardRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Check, Trash2, Sparkles, Star, Clock, Filter } from 'lucide-react';
+import { Plus, Check, Trash2, Sparkles, Star, Clock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
@@ -38,7 +38,7 @@ const ENCOURAGING_MESSAGES = [
   'One step closer! 🚀',
 ];
 
-export const TodoList = forwardRef<HTMLDivElement>((_, ref) => {
+export function TodoList() {
   const { user } = useAuth();
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState('');
@@ -171,7 +171,7 @@ export const TodoList = forwardRef<HTMLDivElement>((_, ref) => {
 
   if (!user) {
     return (
-      <GlassCard ref={ref} className="p-6 text-center">
+      <GlassCard className="p-6 text-center">
         <Sparkles className="w-8 h-8 text-love mx-auto mb-2" />
         <p className="text-muted-foreground">Sign in to use your todo list 💕</p>
       </GlassCard>
@@ -179,7 +179,7 @@ export const TodoList = forwardRef<HTMLDivElement>((_, ref) => {
   }
 
   return (
-    <GlassCard ref={ref} className="p-4 md:p-6 space-y-4">
+    <GlassCard className="p-4 md:p-6 space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <motion.div
@@ -406,6 +406,4 @@ export const TodoList = forwardRef<HTMLDivElement>((_, ref) => {
       )}
     </GlassCard>
   );
-});
-
-TodoList.displayName = 'TodoList';
+}
