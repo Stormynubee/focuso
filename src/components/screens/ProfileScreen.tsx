@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { useAppStore } from '@/store/useAppStore';
 import { NotificationSettings } from '@/components/notifications/NotificationSettings';
+import { CatThemeSettings } from '@/components/cat/CatThemeSettings';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 
@@ -210,11 +211,20 @@ export function ProfileScreen() {
         </GlassCard>
       </motion.div>
 
-      {/* Notification Settings */}
+      {/* Cat Theme Settings */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.25 }}
+      >
+        <CatThemeSettings />
+      </motion.div>
+
+      {/* Notification Settings */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
       >
         <NotificationSettings />
       </motion.div>

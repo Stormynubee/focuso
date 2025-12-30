@@ -85,6 +85,13 @@ export default {
           DEFAULT: "hsl(var(--love))",
           glow: "hsl(var(--love-glow))",
         },
+        cat: {
+          DEFAULT: "hsl(var(--cat))",
+          glow: "hsl(var(--cat-glow))",
+          cream: "hsl(var(--cat-cream))",
+          peach: "hsl(var(--cat-peach))",
+          gray: "hsl(var(--cat-soft-gray))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
