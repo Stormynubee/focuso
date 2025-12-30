@@ -1,16 +1,23 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '@/store/useAppStore';
 import { OnboardingScreen } from '@/components/screens/OnboardingScreen';
 import { Navigation } from '@/components/layout/Navigation';
 import { AnimatedBackground } from '@/components/layout/AnimatedBackground';
 import { DashboardScreen, FocusScreen, AnalyticsScreen } from '@/components/screens/MainScreens';
 import { ProfileScreen } from '@/components/screens/ProfileScreen';
+import { CommunityScreen } from '@/components/screens/CommunityScreen';
 import { useStudyReminders } from '@/hooks/useStudyReminders';
+import { useAuth } from '@/hooks/useAuth';
+import { Button } from '@/components/ui/button';
+import { LogIn, Sparkles } from 'lucide-react';
 
 const Index = () => {
   const { isOnboarded } = useAppStore();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
 
   // Initialize study reminders
   useStudyReminders();
@@ -24,6 +31,24 @@ const Index = () => {
       <AnimatedBackground />
       <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
       
+      {/* Auth prompt for non-logged in users */}
+      {!loading && !user && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="fixed top-4 right-4 md:right-8 z-40"
+        >
+          <Button
+            variant="glow"
+            onClick={() => navigate('/auth')}
+            className="gap-2"
+          >
+            <LogIn className="w-4 h-4" />
+            Sign in for full features
+          </Button>
+        </motion.div>
+      )}
+      
       <main className="md:ml-20 pb-24 md:pb-8 p-4 md:p-8 relative z-10">
         <AnimatePresence mode="wait">
           <motion.div
@@ -35,6 +60,7 @@ const Index = () => {
           >
             {activeTab === 'dashboard' && <DashboardScreen />}
             {activeTab === 'focus' && <FocusScreen />}
+            {activeTab === 'community' && <CommunityScreen />}
             {activeTab === 'analytics' && <AnalyticsScreen />}
             {activeTab === 'profile' && <ProfileScreen />}
           </motion.div>
