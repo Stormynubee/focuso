@@ -73,6 +73,18 @@ export default {
           DEFAULT: "hsl(var(--study))",
           glow: "hsl(var(--study-glow))",
         },
+        couple: {
+          DEFAULT: "hsl(var(--couple))",
+          glow: "hsl(var(--couple-glow))",
+        },
+        partner: {
+          DEFAULT: "hsl(var(--partner))",
+          glow: "hsl(var(--partner-glow))",
+        },
+        love: {
+          DEFAULT: "hsl(var(--love))",
+          glow: "hsl(var(--love-glow))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -141,6 +153,21 @@ export default {
           "0%": { opacity: "0", transform: "translateY(10px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
+        "heartbeat": {
+          "0%, 100%": { transform: "scale(1)" },
+          "15%": { transform: "scale(1.15)" },
+          "30%": { transform: "scale(1)" },
+          "45%": { transform: "scale(1.1)" },
+          "60%": { transform: "scale(1)" },
+        },
+        "soft-pop": {
+          "0%": { transform: "scale(0.8)", opacity: "0" },
+          "100%": { transform: "scale(1)", opacity: "1" },
+        },
+        "gentle-pulse": {
+          "0%, 100%": { opacity: "1", boxShadow: "0 0 0 0 hsl(var(--couple) / 0.4)" },
+          "50%": { opacity: "0.9", boxShadow: "0 0 0 10px hsl(var(--couple) / 0)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -155,6 +182,9 @@ export default {
         "breathing": "breathing 4s ease-in-out infinite",
         "spin-slow": "spin-slow 20s linear infinite",
         "counter": "counter 0.5s ease-out",
+        "heartbeat": "heartbeat 1.5s ease-in-out infinite",
+        "soft-pop": "soft-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
+        "gentle-pulse": "gentle-pulse 3s ease-in-out infinite",
       },
       backdropBlur: {
         xs: "2px",
