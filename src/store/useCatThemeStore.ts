@@ -12,6 +12,9 @@ interface CatThemeState {
   animationIntensity: 'low' | 'medium' | 'high';
   soundEnabled: boolean;
   
+  // UI Color Theme (hue value 0-360)
+  uiHue: number;
+  
   // Timer Cat settings
   timerCatEnabled: boolean;
   timerCatStyle: CatStyle;
@@ -46,6 +49,7 @@ interface CatThemeState {
   setSoundEnabled: (enabled: boolean) => void;
   setMood: (mood: CatMood) => void;
   triggerInteraction: () => void;
+  setUiHue: (hue: number) => void;
   
   // Timer Cat actions
   setTimerCatEnabled: (enabled: boolean) => void;
@@ -81,6 +85,9 @@ export const useCatThemeStore = create<CatThemeState>()(
       isInteracting: false,
       lastInteraction: null,
       
+      // UI Color Theme - default lavender hue (270)
+      uiHue: 270,
+      
       // Timer Cat defaults
       timerCatEnabled: true,
       timerCatStyle: 'default',
@@ -112,6 +119,8 @@ export const useCatThemeStore = create<CatThemeState>()(
       setSoundEnabled: (enabled) => set({ soundEnabled: enabled }),
       
       setMood: (mood) => set({ currentMood: mood }),
+      
+      setUiHue: (hue) => set({ uiHue: hue }),
       
       triggerInteraction: () => {
         set({ isInteracting: true, lastInteraction: new Date() });

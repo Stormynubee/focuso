@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Cat, Sparkles, Volume2, VolumeX, Zap, Moon, Heart, Timer, Music, Eye, EyeOff } from 'lucide-react';
+import { Cat, Sparkles, Volume2, VolumeX, Zap, Moon, Heart, Timer, Music, Eye, EyeOff, Palette } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Slider } from '@/components/ui/slider';
@@ -7,6 +7,15 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { useCatThemeStore, CatPersonality, CatStyle } from '@/store/useCatThemeStore';
 import { CatCompanion } from './CatCompanion';
 import { toast } from 'sonner';
+
+const COLOR_PRESETS = [
+  { hue: 270, label: 'Lavender', emoji: '💜' },
+  { hue: 340, label: 'Rose', emoji: '🌸' },
+  { hue: 20, label: 'Peach', emoji: '🍑' },
+  { hue: 45, label: 'Honey', emoji: '🍯' },
+  { hue: 160, label: 'Mint', emoji: '🌿' },
+  { hue: 200, label: 'Sky', emoji: '☁️' },
+];
 
 const PERSONALITIES: { value: CatPersonality; label: string; icon: React.ReactNode; description: string }[] = [
   { value: 'calm', label: 'Calm', icon: <Moon className="w-4 h-4" />, description: 'Gentle & peaceful' },
@@ -37,6 +46,7 @@ export function CatThemeSettings() {
     personality, 
     animationIntensity, 
     soundEnabled,
+    uiHue,
     timerCatEnabled,
     timerCatStyle,
     timerCatMode,
@@ -47,6 +57,7 @@ export function CatThemeSettings() {
     setPersonality,
     setAnimationIntensity,
     setSoundEnabled,
+    setUiHue,
     setTimerCatEnabled,
     setTimerCatStyle,
     setTimerCatMode,
@@ -122,6 +133,39 @@ export function CatThemeSettings() {
                 </motion.button>
               ))}
             </div>
+          </div>
+
+          {/* UI Color Theme */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <Palette className="w-4 h-4 text-muted-foreground" />
+              <span className="text-sm font-medium">UI Color</span>
+            </div>
+            <div className="flex gap-2 flex-wrap">
+              {COLOR_PRESETS.map((preset) => (
+                <button
+                  key={preset.hue}
+                  onClick={() => setUiHue(preset.hue)}
+                  className={`w-8 h-8 rounded-full border-2 transition-all flex items-center justify-center text-sm ${
+                    uiHue === preset.hue ? 'border-foreground scale-110' : 'border-transparent'
+                  }`}
+                  style={{ backgroundColor: `hsl(${preset.hue}, 60%, 55%)` }}
+                  title={preset.label}
+                >
+                  {uiHue === preset.hue && '✓'}
+                </button>
+              ))}
+            </div>
+            <Slider
+              value={[uiHue]}
+              onValueChange={(v) => setUiHue(v[0])}
+              max={360}
+              step={1}
+              className="w-full"
+            />
+            <p className="text-[10px] text-muted-foreground text-center">
+              Drag to pick any color • Hue: {uiHue}°
+            </p>
           </div>
 
           {/* Animation Intensity */}
