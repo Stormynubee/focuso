@@ -1,11 +1,10 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Cat, Sparkles, Volume2, VolumeX, Zap, Moon, Heart } from 'lucide-react';
+import { Cat, Sparkles, Volume2, VolumeX, Zap, Moon, Heart, Timer, Music, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Slider } from '@/components/ui/slider';
 import { GlassCard } from '@/components/ui/GlassCard';
-import { useCatThemeStore, CatPersonality } from '@/store/useCatThemeStore';
+import { useCatThemeStore, CatPersonality, CatStyle } from '@/store/useCatThemeStore';
 import { CatCompanion } from './CatCompanion';
 import { toast } from 'sonner';
 
@@ -15,16 +14,45 @@ const PERSONALITIES: { value: CatPersonality; label: string; icon: React.ReactNo
   { value: 'sleepy', label: 'Sleepy', icon: <Heart className="w-4 h-4" />, description: 'Cozy & relaxed' },
 ];
 
+const CAT_STYLES: { value: CatStyle; label: string; color: string }[] = [
+  { value: 'default', label: 'Charcoal', color: '#2A2A35' },
+  { value: 'orange', label: 'Orange', color: '#E8956A' },
+  { value: 'gray', label: 'Gray', color: '#8A8A96' },
+  { value: 'calico', label: 'Calico', color: '#E8956A' },
+];
+
+const PAGE_CATS: { key: keyof ReturnType<typeof useCatThemeStore.getState>['pageCats']; label: string }[] = [
+  { key: 'dashboard', label: 'Dashboard' },
+  { key: 'focus', label: 'Focus' },
+  { key: 'analytics', label: 'Analytics' },
+  { key: 'leaderboard', label: 'Leaderboard' },
+  { key: 'profile', label: 'Profile' },
+  { key: 'couple', label: 'Sync Mode' },
+  { key: 'chat', label: 'Chat' },
+];
+
 export function CatThemeSettings() {
   const { 
     isEnabled, 
     personality, 
     animationIntensity, 
     soundEnabled,
+    timerCatEnabled,
+    timerCatStyle,
+    timerCatMode,
+    spotifyCatEnabled,
+    spotifyCatStyle,
+    pageCats,
     setEnabled,
     setPersonality,
     setAnimationIntensity,
     setSoundEnabled,
+    setTimerCatEnabled,
+    setTimerCatStyle,
+    setTimerCatMode,
+    setSpotifyCatEnabled,
+    setSpotifyCatStyle,
+    setPageCat,
   } = useCatThemeStore();
 
   const intensityValue = animationIntensity === 'low' ? 0 : animationIntensity === 'medium' ? 50 : 100;
@@ -116,6 +144,139 @@ export function CatThemeSettings() {
               <span>Minimal</span>
               <span>Balanced</span>
               <span>Lively</span>
+            </div>
+          </div>
+
+          {/* Timer Cat Settings */}
+          <div className="p-4 rounded-xl bg-secondary/30 space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Timer className="w-4 h-4 text-cat" />
+                <div>
+                  <p className="text-sm font-medium">Timer Cat</p>
+                  <p className="text-[10px] text-muted-foreground">Walks along Pomodoro timer</p>
+                </div>
+              </div>
+              <Switch 
+                checked={timerCatEnabled}
+                onCheckedChange={setTimerCatEnabled}
+              />
+            </div>
+            
+            {timerCatEnabled && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                className="space-y-3 pt-2"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-muted-foreground w-16">Style:</span>
+                  <div className="flex gap-1">
+                    {CAT_STYLES.map((style) => (
+                      <button
+                        key={style.value}
+                        onClick={() => setTimerCatStyle(style.value)}
+                        className={`w-6 h-6 rounded-full border-2 transition-all ${
+                          timerCatStyle === style.value ? 'border-cat scale-110' : 'border-transparent'
+                        }`}
+                        style={{ backgroundColor: style.color }}
+                        title={style.label}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-muted-foreground w-16">Mode:</span>
+                  <div className="flex gap-1">
+                    <Button
+                      size="sm"
+                      variant={timerCatMode === 'walking' ? 'default' : 'outline'}
+                      onClick={() => setTimerCatMode('walking')}
+                      className="h-7 text-xs"
+                    >
+                      Walking
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant={timerCatMode === 'sitting' ? 'default' : 'outline'}
+                      onClick={() => setTimerCatMode('sitting')}
+                      className="h-7 text-xs"
+                    >
+                      Sitting
+                    </Button>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </div>
+
+          {/* Spotify Cat Settings */}
+          <div className="p-4 rounded-xl bg-secondary/30 space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Music className="w-4 h-4 text-[#1DB954]" />
+                <div>
+                  <p className="text-sm font-medium">Spotify Cat</p>
+                  <p className="text-[10px] text-muted-foreground">Draggable music companion</p>
+                </div>
+              </div>
+              <Switch 
+                checked={spotifyCatEnabled}
+                onCheckedChange={setSpotifyCatEnabled}
+              />
+            </div>
+            
+            {spotifyCatEnabled && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                className="pt-2"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-muted-foreground w-16">Style:</span>
+                  <div className="flex gap-1">
+                    {CAT_STYLES.map((style) => (
+                      <button
+                        key={style.value}
+                        onClick={() => setSpotifyCatStyle(style.value)}
+                        className={`w-6 h-6 rounded-full border-2 transition-all ${
+                          spotifyCatStyle === style.value ? 'border-[#1DB954] scale-110' : 'border-transparent'
+                        }`}
+                        style={{ backgroundColor: style.color }}
+                        title={style.label}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </div>
+
+          {/* Per-page cats */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <Eye className="w-4 h-4 text-muted-foreground" />
+              <span className="text-sm font-medium">Page Cats</span>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              {PAGE_CATS.map((page) => (
+                <button
+                  key={page.key}
+                  onClick={() => setPageCat(page.key, !pageCats[page.key])}
+                  className={`p-2 rounded-lg text-xs flex items-center gap-2 transition-all ${
+                    pageCats[page.key]
+                      ? 'bg-cat/20 text-foreground'
+                      : 'bg-secondary/30 text-muted-foreground'
+                  }`}
+                >
+                  {pageCats[page.key] ? (
+                    <Eye className="w-3 h-3" />
+                  ) : (
+                    <EyeOff className="w-3 h-3" />
+                  )}
+                  {page.label}
+                </button>
+              ))}
             </div>
           </div>
 

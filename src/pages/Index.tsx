@@ -10,13 +10,14 @@ import { ProfileScreen } from '@/components/screens/ProfileScreen';
 import { CommunityScreen } from '@/components/screens/CommunityScreen';
 import { CoupleScreen } from '@/components/screens/CoupleScreen';
 import { TasksScreen } from '@/components/screens/TasksScreen';
-import { SpotifyMiniPlayer } from '@/components/music/SpotifyMiniPlayer';
+import { SpotifyCat } from '@/components/cat/SpotifyCat';
 import { CatCompanion } from '@/components/cat/CatCompanion';
 import { PeekingCat } from '@/components/cat/CatElements';
+import { PageCat } from '@/components/cat/PageCat';
 import { useStudyReminders } from '@/hooks/useStudyReminders';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
-import { LogIn, Sparkles } from 'lucide-react';
+import { LogIn } from 'lucide-react';
 
 const Index = () => {
   const { isOnboarded } = useAppStore();
@@ -30,6 +31,19 @@ const Index = () => {
   if (!isOnboarded) {
     return <OnboardingScreen />;
   }
+
+  // Map tab to page cat type
+  const getPageCatType = () => {
+    switch (activeTab) {
+      case 'dashboard': return 'dashboard';
+      case 'focus': return 'focus';
+      case 'analytics': return 'analytics';
+      case 'community': return 'leaderboard';
+      case 'profile': return 'profile';
+      case 'couple': return 'couple';
+      default: return 'dashboard';
+    }
+  };
 
   return (
     <div className="min-h-screen relative">
@@ -72,10 +86,15 @@ const Index = () => {
             {activeTab === 'profile' && <ProfileScreen />}
           </motion.div>
         </AnimatePresence>
+        
+        {/* Page-specific cat */}
+        <div className="fixed bottom-28 left-4 md:left-24 z-30">
+          <PageCat page={getPageCatType() as any} />
+        </div>
       </main>
       
-      {/* Floating Spotify Mini Player */}
-      <SpotifyMiniPlayer />
+      {/* Draggable Spotify Cat (replaces SpotifyMiniPlayer) */}
+      <SpotifyCat />
       
       {/* Cat Theme Companion */}
       <CatCompanion position="corner" />

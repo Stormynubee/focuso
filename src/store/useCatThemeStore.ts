@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware';
 
 export type CatPersonality = 'calm' | 'playful' | 'sleepy';
 export type CatMood = 'happy' | 'focused' | 'curious' | 'sleepy' | 'celebrating';
+export type CatStyle = 'default' | 'orange' | 'gray' | 'calico';
 
 interface CatThemeState {
   // Theme settings
@@ -10,6 +11,28 @@ interface CatThemeState {
   personality: CatPersonality;
   animationIntensity: 'low' | 'medium' | 'high';
   soundEnabled: boolean;
+  
+  // Timer Cat settings
+  timerCatEnabled: boolean;
+  timerCatStyle: CatStyle;
+  timerCatMode: 'walking' | 'sitting';
+  
+  // Spotify Cat settings
+  spotifyCatEnabled: boolean;
+  spotifyCatStyle: CatStyle;
+  spotifyCatPosition: { x: number; y: number } | null;
+  spotifyCatLocked: boolean;
+  
+  // Per-page cat visibility
+  pageCats: {
+    dashboard: boolean;
+    focus: boolean;
+    analytics: boolean;
+    leaderboard: boolean;
+    profile: boolean;
+    couple: boolean;
+    chat: boolean;
+  };
   
   // Current state
   currentMood: CatMood;
@@ -24,6 +47,20 @@ interface CatThemeState {
   setMood: (mood: CatMood) => void;
   triggerInteraction: () => void;
   
+  // Timer Cat actions
+  setTimerCatEnabled: (enabled: boolean) => void;
+  setTimerCatStyle: (style: CatStyle) => void;
+  setTimerCatMode: (mode: 'walking' | 'sitting') => void;
+  
+  // Spotify Cat actions
+  setSpotifyCatEnabled: (enabled: boolean) => void;
+  setSpotifyCatStyle: (style: CatStyle) => void;
+  setSpotifyCatPosition: (position: { x: number; y: number } | null) => void;
+  setSpotifyCatLocked: (locked: boolean) => void;
+  
+  // Per-page cat actions
+  setPageCat: (page: keyof CatThemeState['pageCats'], enabled: boolean) => void;
+  
   // Reactions based on app events
   onStudyStart: () => void;
   onStudyComplete: () => void;
@@ -35,14 +72,36 @@ interface CatThemeState {
 export const useCatThemeStore = create<CatThemeState>()(
   persist(
     (set, get) => ({
-      // Defaults - Cat Theme OFF by default
-      isEnabled: false,
+      // Defaults - Cat Theme ON by default (subtle)
+      isEnabled: true,
       personality: 'calm',
-      animationIntensity: 'medium',
+      animationIntensity: 'low',
       soundEnabled: false,
       currentMood: 'happy',
       isInteracting: false,
       lastInteraction: null,
+      
+      // Timer Cat defaults
+      timerCatEnabled: true,
+      timerCatStyle: 'default',
+      timerCatMode: 'walking',
+      
+      // Spotify Cat defaults
+      spotifyCatEnabled: true,
+      spotifyCatStyle: 'orange',
+      spotifyCatPosition: null,
+      spotifyCatLocked: false,
+      
+      // Per-page cats - all enabled by default
+      pageCats: {
+        dashboard: true,
+        focus: true,
+        analytics: true,
+        leaderboard: true,
+        profile: true,
+        couple: true,
+        chat: true,
+      },
 
       setEnabled: (enabled) => set({ isEnabled: enabled }),
       
@@ -56,9 +115,24 @@ export const useCatThemeStore = create<CatThemeState>()(
       
       triggerInteraction: () => {
         set({ isInteracting: true, lastInteraction: new Date() });
-        // Reset after animation
         setTimeout(() => set({ isInteracting: false }), 2000);
       },
+      
+      // Timer Cat
+      setTimerCatEnabled: (enabled) => set({ timerCatEnabled: enabled }),
+      setTimerCatStyle: (style) => set({ timerCatStyle: style }),
+      setTimerCatMode: (mode) => set({ timerCatMode: mode }),
+      
+      // Spotify Cat
+      setSpotifyCatEnabled: (enabled) => set({ spotifyCatEnabled: enabled }),
+      setSpotifyCatStyle: (style) => set({ spotifyCatStyle: style }),
+      setSpotifyCatPosition: (position) => set({ spotifyCatPosition: position }),
+      setSpotifyCatLocked: (locked) => set({ spotifyCatLocked: locked }),
+      
+      // Per-page
+      setPageCat: (page, enabled) => set((state) => ({
+        pageCats: { ...state.pageCats, [page]: enabled }
+      })),
 
       // Event-based reactions
       onStudyStart: () => {
@@ -76,7 +150,6 @@ export const useCatThemeStore = create<CatThemeState>()(
       },
 
       onDistraction: (appName: string) => {
-        // Cat looks curious/sideways - non-judgmental
         set({ currentMood: 'curious', isInteracting: true });
         setTimeout(() => set({ currentMood: 'focused', isInteracting: false }), 2000);
       },
