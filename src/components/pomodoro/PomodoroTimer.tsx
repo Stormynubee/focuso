@@ -1,17 +1,20 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Pause, RotateCcw, Settings, Volume2, VolumeX } from 'lucide-react';
+import { Play, Pause, RotateCcw, Volume2, VolumeX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { useAppStore } from '@/store/useAppStore';
+import { useNotifications } from '@/hooks/useNotifications';
 
 type TimerState = 'idle' | 'focus' | 'break' | 'paused';
 
 export function PomodoroTimer() {
   const { pomodoroSettings, addPomodoroSession, currentDistraction } = useAppStore();
+  const { notifyPomodoroComplete } = useNotifications();
   const [state, setState] = useState<TimerState>('idle');
   const [timeLeft, setTimeLeft] = useState(pomodoroSettings.focusTime * 60);
   const [completedPomodoros, setCompletedPomodoros] = useState(0);
+  const prevStateRef = useRef<TimerState>('idle');
   const [soundEnabled, setSoundEnabled] = useState(true);
 
   const totalTime = state === 'break' 
@@ -64,9 +67,11 @@ export function PomodoroTimer() {
                 timestamp: new Date(),
               });
               setCompletedPomodoros((c) => c + 1);
+              notifyPomodoroComplete(false); // Focus session complete
               setState('break');
               return pomodoroSettings.breakTime * 60;
             } else {
+              notifyPomodoroComplete(true); // Break complete
               setState('idle');
               return pomodoroSettings.focusTime * 60;
             }
@@ -77,7 +82,7 @@ export function PomodoroTimer() {
     }
 
     return () => clearInterval(interval);
-  }, [state, currentDistraction, playSound, addPomodoroSession, pomodoroSettings]);
+  }, [state, currentDistraction, playSound, addPomodoroSession, pomodoroSettings, notifyPomodoroComplete]);
 
   // Auto-pause on distraction
   useEffect(() => {

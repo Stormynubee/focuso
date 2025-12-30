@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { AlertTriangle, Plus, Clock, X } from 'lucide-react';
+import { AlertTriangle, Plus, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { useAppStore, Distraction } from '@/store/useAppStore';
+import { useNotifications } from '@/hooks/useNotifications';
 
 const COMMON_DISTRACTIONS = [
   { name: 'YouTube', category: 'video' as const, icon: '📺' },
@@ -23,6 +24,7 @@ export function DistractionTracker() {
     addManualDistraction,
     distractions 
   } = useAppStore();
+  const { notifyDistraction } = useNotifications();
   
   const [showAddManual, setShowAddManual] = useState(false);
   const [manualMinutes, setManualMinutes] = useState('');
@@ -55,6 +57,9 @@ export function DistractionTracker() {
       endTime,
       duration,
     });
+
+    // Send notification warning
+    notifyDistraction(selectedDistraction.name);
 
     setShowAddManual(false);
     setManualMinutes('');

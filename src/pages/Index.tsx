@@ -6,10 +6,14 @@ import { Navigation } from '@/components/layout/Navigation';
 import { AnimatedBackground } from '@/components/layout/AnimatedBackground';
 import { DashboardScreen, FocusScreen, AnalyticsScreen } from '@/components/screens/MainScreens';
 import { ProfileScreen } from '@/components/screens/ProfileScreen';
+import { useStudyReminders } from '@/hooks/useStudyReminders';
 
 const Index = () => {
   const { isOnboarded } = useAppStore();
   const [activeTab, setActiveTab] = useState('dashboard');
+
+  // Initialize study reminders
+  useStudyReminders();
 
   if (!isOnboarded) {
     return <OnboardingScreen />;

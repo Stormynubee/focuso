@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { useAppStore } from '@/store/useAppStore';
+import { NotificationSettings } from '@/components/notifications/NotificationSettings';
 
 export function ProfileScreen() {
   const { user, updateUser, clearUser, studySessions, distractions, pomodoroSessions } = useAppStore();
@@ -194,6 +195,15 @@ export function ProfileScreen() {
             </div>
           </div>
         </GlassCard>
+      </motion.div>
+
+      {/* Notification Settings */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.25 }}
+      >
+        <NotificationSettings />
       </motion.div>
 
       {/* Danger Zone */}
