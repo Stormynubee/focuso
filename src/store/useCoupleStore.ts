@@ -29,6 +29,8 @@ export interface DistractionAlert {
   from: 'me' | 'partner';
 }
 
+export type StudyTogetherState = 'idle' | 'invited' | 'waiting' | 'active' | 'break';
+
 interface CoupleState {
   // Couple Mode
   isCoupleMode: boolean;
@@ -41,6 +43,11 @@ interface CoupleState {
   // My status (shared with partner)
   myStatus: PartnerStatus;
   myPomodoroActive: boolean;
+  
+  // Study Together
+  studyTogetherActive: boolean;
+  studyTogetherState: StudyTogetherState;
+  partnerJoined: boolean;
   
   // Messages
   coupleMessages: CoupleMessage[];
@@ -71,6 +78,11 @@ interface CoupleState {
   // My status
   setMyStatus: (status: PartnerStatus) => void;
   setMyPomodoroActive: (active: boolean) => void;
+  
+  // Study Together actions
+  setStudyTogetherActive: (active: boolean) => void;
+  setStudyTogetherState: (state: StudyTogetherState) => void;
+  setPartnerJoined: (joined: boolean) => void;
   
   // Messages
   sendMessage: (content: string, emoji?: string) => void;
@@ -106,6 +118,9 @@ export const useCoupleStore = create<CoupleState>()(
       partner: null,
       myStatus: 'offline',
       myPomodoroActive: false,
+      studyTogetherActive: false,
+      studyTogetherState: 'idle',
+      partnerJoined: false,
       coupleMessages: [],
       distractionAlerts: [],
       alertSettings: {
@@ -172,6 +187,12 @@ export const useCoupleStore = create<CoupleState>()(
       setMyStatus: (status) => set({ myStatus: status }),
 
       setMyPomodoroActive: (active) => set({ myPomodoroActive: active }),
+
+      setStudyTogetherActive: (active) => set({ studyTogetherActive: active }),
+
+      setStudyTogetherState: (state) => set({ studyTogetherState: state }),
+
+      setPartnerJoined: (joined) => set({ partnerJoined: joined }),
 
       sendMessage: (content, emoji) => {
         const message: CoupleMessage = {
