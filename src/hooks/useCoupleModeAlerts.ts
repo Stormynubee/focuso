@@ -59,7 +59,7 @@ export function useCoupleModeAlerts() {
       sendNotification({
         title: `💕 ${partner.name}`,
         body: randomMessage,
-        type: 'info',
+        type: 'reminder',
       });
     }
 

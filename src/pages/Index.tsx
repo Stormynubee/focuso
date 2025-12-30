@@ -62,12 +62,16 @@ const Index = () => {
           >
             {activeTab === 'dashboard' && <DashboardScreen />}
             {activeTab === 'focus' && <FocusScreen />}
+            {activeTab === 'couple' && <CoupleScreen />}
             {activeTab === 'community' && <CommunityScreen />}
             {activeTab === 'analytics' && <AnalyticsScreen />}
             {activeTab === 'profile' && <ProfileScreen />}
           </motion.div>
         </AnimatePresence>
       </main>
+      
+      {/* Floating Spotify Mini Player */}
+      <SpotifyMiniPlayer />
     </div>
   );
 };
