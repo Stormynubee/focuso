@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { useAppStore } from '@/store/useAppStore';
 import { useNotifications } from '@/hooks/useNotifications';
+import { useCatSounds } from '@/hooks/useCatSounds';
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
 
@@ -20,6 +21,7 @@ const PRESET_TIMES = [
 export function PomodoroTimer() {
   const { pomodoroSettings, setPomodoroSettings, addPomodoroSession, currentDistraction } = useAppStore();
   const { notifyPomodoroComplete } = useNotifications();
+  const { play: playCatSound } = useCatSounds();
   const [state, setState] = useState<TimerState>('idle');
   const [timeLeft, setTimeLeft] = useState(pomodoroSettings.focusTime * 60);
   const [completedPomodoros, setCompletedPomodoros] = useState(0);
@@ -75,6 +77,7 @@ export function PomodoroTimer() {
           if (prev <= 1) {
             playSound();
             if (state === 'focus') {
+              playCatSound('success');
               addPomodoroSession({
                 focusTime: pomodoroSettings.focusTime,
                 breakTime: pomodoroSettings.breakTime,
@@ -86,9 +89,10 @@ export function PomodoroTimer() {
               setState('break');
               return pomodoroSettings.breakTime * 60;
             } else {
+              playCatSound('meow');
               notifyPomodoroComplete(true);
               setState('idle');
-              setIsFullscreen(false); // Exit fullscreen after break
+              setIsFullscreen(false);
               return pomodoroSettings.focusTime * 60;
             }
           }
@@ -98,7 +102,7 @@ export function PomodoroTimer() {
     }
 
     return () => clearInterval(interval);
-  }, [state, currentDistraction, playSound, addPomodoroSession, pomodoroSettings, notifyPomodoroComplete]);
+  }, [state, currentDistraction, playSound, playCatSound, addPomodoroSession, pomodoroSettings, notifyPomodoroComplete]);
 
   // Auto-pause on distraction
   useEffect(() => {
@@ -125,6 +129,7 @@ export function PomodoroTimer() {
       if (timeLeft <= 0) {
         setTimeLeft(pomodoroSettings.focusTime * 60);
       }
+      playCatSound('purr');
       setState('focus');
       setIsFullscreen(true);
     }

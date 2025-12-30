@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+import { useCatSounds } from '@/hooks/useCatSounds';
 
 interface Todo {
   id: string;
@@ -40,6 +41,7 @@ const ENCOURAGING_MESSAGES = [
 
 export function TodoList() {
   const { user } = useAuth();
+  const { play } = useCatSounds();
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -95,6 +97,7 @@ export function TodoList() {
 
     setTodos([data, ...todos]);
     setNewTodo('');
+    play('chirp');
     toast.success('Task added! ✨');
   };
 
@@ -113,6 +116,7 @@ export function TodoList() {
     setTodos(todos.map(t => t.id === id ? { ...t, completed: !completed } : t));
     
     if (!completed) {
+      play('success');
       const randomMessage = ENCOURAGING_MESSAGES[Math.floor(Math.random() * ENCOURAGING_MESSAGES.length)];
       toast.success(randomMessage);
     }
