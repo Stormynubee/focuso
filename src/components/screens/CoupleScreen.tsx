@@ -8,6 +8,7 @@ import { CoupleSettings } from '@/components/couple/CoupleSettings';
 import { StudyTogetherPomodoro } from '@/components/couple/StudyTogetherPomodoro';
 import { AutoDetectionStatus } from '@/components/distraction/AutoDetectionStatus';
 import { DistractionTestPanel } from '@/components/distraction/DistractionTestPanel';
+import { SyncModeCats } from '@/components/cat/CatCompanion';
 import { useCoupleStore } from '@/store/useCoupleStore';
 import { useDistractionMonitor } from '@/hooks/useDistractionMonitor';
 import { Button } from '@/components/ui/button';
@@ -32,6 +33,10 @@ export function CoupleScreen() {
         >
           <Heart className="w-8 h-8 text-couple" />
         </motion.div>
+        
+        {/* Cat Theme - Dual cats for Sync Mode */}
+        {isConnected && <SyncModeCats />}
+        
         <h1 className="text-3xl font-display font-bold gradient-text mb-2">
           Sync Mode
         </h1>

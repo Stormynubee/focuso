@@ -70,6 +70,13 @@
     --love: 350 85% 65%;
     --love-glow: 350 90% 75%;
 
+    /* Cat Theme Colors */
+    --cat: 25 80% 70%;
+    --cat-glow: 25 85% 80%;
+    --cat-cream: 35 60% 90%;
+    --cat-peach: 15 70% 80%;
+    --cat-soft-gray: 220 10% 75%;
+
     /* Borders */
     --border: 260 20% 20%;
     --input: 260 20% 18%;

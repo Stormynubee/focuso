@@ -11,6 +11,8 @@ import { CommunityScreen } from '@/components/screens/CommunityScreen';
 import { CoupleScreen } from '@/components/screens/CoupleScreen';
 import { TasksScreen } from '@/components/screens/TasksScreen';
 import { SpotifyMiniPlayer } from '@/components/music/SpotifyMiniPlayer';
+import { CatCompanion } from '@/components/cat/CatCompanion';
+import { PeekingCat } from '@/components/cat/CatElements';
 import { useStudyReminders } from '@/hooks/useStudyReminders';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
@@ -74,6 +76,10 @@ const Index = () => {
       
       {/* Floating Spotify Mini Player */}
       <SpotifyMiniPlayer />
+      
+      {/* Cat Theme Companion */}
+      <CatCompanion position="corner" />
+      <PeekingCat position="bottom-left" />
     </div>
   );
 };
