@@ -10,107 +10,116 @@
 @import '@fontsource/inter/500.css';
 @import '@fontsource/inter/600.css';
 
-/* FocusOS Design System - Cute Sync Mode Theme */
+/* 🐱 FocusOS Cat Theme Design System */
 
 @layer base {
   :root {
-    /* Core backgrounds - Soft dark with warmth */
-    --background: 250 25% 6%;
-    --foreground: 210 40% 98%;
+    /* Cat Theme Color Palette */
+    --background: 260 20% 8%;
+    --foreground: 30 50% 97%;
 
-    /* Card with glass effect base */
-    --card: 250 25% 10%;
-    --card-foreground: 210 40% 98%;
+    /* Card with warm glass effect */
+    --card: 260 18% 12%;
+    --card-foreground: 30 50% 97%;
 
     /* Popover */
-    --popover: 250 25% 8%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 260 20% 10%;
+    --popover-foreground: 30 50% 97%;
 
-    /* Primary - Soft Pink/Rose */
-    --primary: 340 75% 65%;
-    --primary-foreground: 250 25% 6%;
-    --primary-glow: 340 80% 75%;
+    /* Primary - Dusty Rose (Cat nose color) */
+    --primary: 350 55% 70%;
+    --primary-foreground: 260 20% 8%;
+    --primary-glow: 350 60% 80%;
 
-    /* Secondary - Subtle lavender */
-    --secondary: 270 20% 15%;
-    --secondary-foreground: 210 40% 98%;
+    /* Secondary - Warm cream */
+    --secondary: 30 30% 18%;
+    --secondary-foreground: 30 50% 97%;
 
-    /* Muted */
-    --muted: 260 20% 18%;
-    --muted-foreground: 250 15% 60%;
+    /* Muted - Warm gray */
+    --muted: 260 15% 20%;
+    --muted-foreground: 30 20% 60%;
 
-    /* Accent - Soft cyan/teal */
-    --accent: 175 60% 50%;
-    --accent-foreground: 250 25% 6%;
-    --accent-glow: 175 65% 60%;
+    /* Accent - Soft lavender */
+    --accent: 270 40% 70%;
+    --accent-foreground: 260 20% 8%;
+    --accent-glow: 270 45% 80%;
 
     /* Semantic colors */
-    --destructive: 0 65% 55%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 55% 55%;
+    --destructive-foreground: 30 50% 97%;
 
-    --success: 160 70% 45%;
-    --success-foreground: 210 40% 98%;
+    --success: 160 50% 50%;
+    --success-foreground: 30 50% 97%;
 
-    --warning: 38 85% 55%;
-    --warning-foreground: 250 25% 6%;
+    --warning: 35 85% 60%;
+    --warning-foreground: 260 20% 8%;
 
-    /* Focus/Study specific */
-    --focus: 340 75% 65%;
-    --focus-glow: 340 80% 55%;
-    --distraction: 0 65% 55%;
-    --distraction-glow: 0 65% 45%;
-    --study: 160 70% 45%;
-    --study-glow: 160 70% 35%;
+    /* Focus/Study specific - Cat themed */
+    --focus: 270 40% 70%;
+    --focus-glow: 270 45% 60%;
+    --distraction: 0 55% 55%;
+    --distraction-glow: 0 55% 45%;
+    --study: 160 50% 50%;
+    --study-glow: 160 50% 40%;
 
-    /* Sync Mode Colors */
-    --couple: 340 75% 65%;
-    --couple-glow: 340 80% 75%;
-    --partner: 280 60% 60%;
-    --partner-glow: 280 65% 70%;
-    --love: 350 85% 65%;
-    --love-glow: 350 90% 75%;
+    /* Sync Mode Colors - Warm pink tones */
+    --couple: 350 55% 70%;
+    --couple-glow: 350 60% 80%;
+    --partner: 280 50% 65%;
+    --partner-glow: 280 55% 75%;
+    --love: 350 70% 68%;
+    --love-glow: 350 75% 78%;
 
-    /* Cat Theme Colors */
-    --cat: 25 80% 70%;
-    --cat-glow: 25 85% 80%;
-    --cat-cream: 35 60% 90%;
-    --cat-peach: 15 70% 80%;
-    --cat-soft-gray: 220 10% 75%;
+    /* Cat Theme Specific Colors */
+    --cat-cream: 35 60% 92%;
+    --cat-peach: 15 70% 82%;
+    --cat-rose: 350 55% 70%;
+    --cat-lavender: 270 40% 75%;
+    --cat-mint: 160 45% 70%;
+    --cat-honey: 35 85% 65%;
+    --cat-warm-gray: 30 15% 55%;
+    --cat-nose: 350 60% 75%;
+    --cat-fur: 30 40% 85%;
+    --cat-whisker: 30 25% 70%;
 
-    /* Borders */
-    --border: 260 20% 20%;
-    --input: 260 20% 18%;
-    --ring: 340 75% 65%;
+    /* Borders - Softer, warmer */
+    --border: 260 15% 22%;
+    --input: 260 15% 20%;
+    --ring: 350 55% 70%;
 
-    --radius: 1rem;
+    /* Increased radius for paw-like softness */
+    --radius: 1.5rem;
 
-    /* Gradients - Softer, more romantic */
-    --gradient-primary: linear-gradient(135deg, hsl(340 75% 65%), hsl(280 60% 60%));
-    --gradient-background: radial-gradient(ellipse at top, hsl(250 25% 10%) 0%, hsl(250 25% 6%) 100%);
-    --gradient-card: linear-gradient(135deg, hsl(260 20% 15% / 0.8), hsl(250 25% 10% / 0.6));
-    --gradient-glow: radial-gradient(circle, hsl(340 75% 65% / 0.3) 0%, transparent 70%);
-    --gradient-love: linear-gradient(135deg, hsl(340 75% 65%), hsl(350 85% 65%));
-    --gradient-couple: linear-gradient(135deg, hsl(340 75% 65%), hsl(280 60% 60%), hsl(175 60% 50%));
+    /* Cat-themed Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(350 55% 70%), hsl(270 40% 70%));
+    --gradient-background: radial-gradient(ellipse at top, hsl(260 20% 12%) 0%, hsl(260 20% 8%) 100%);
+    --gradient-card: linear-gradient(135deg, hsl(260 18% 15% / 0.8), hsl(260 20% 10% / 0.6));
+    --gradient-glow: radial-gradient(circle, hsl(350 55% 70% / 0.3) 0%, transparent 70%);
+    --gradient-love: linear-gradient(135deg, hsl(350 55% 70%), hsl(350 70% 68%));
+    --gradient-couple: linear-gradient(135deg, hsl(350 55% 70%), hsl(280 50% 65%), hsl(270 40% 70%));
+    --gradient-cat: linear-gradient(135deg, hsl(30 40% 85%), hsl(350 55% 70%));
+    --gradient-paw: radial-gradient(circle, hsl(350 60% 75%) 0%, hsl(350 55% 70%) 100%);
 
-    /* Glass effect */
-    --glass-bg: hsl(260 20% 15% / 0.6);
-    --glass-border: hsl(340 75% 65% / 0.2);
+    /* Glass effect - Warmer */
+    --glass-bg: hsl(260 18% 15% / 0.7);
+    --glass-border: hsl(350 55% 70% / 0.15);
 
-    /* Shadows */
-    --shadow-glow: 0 0 40px hsl(340 75% 65% / 0.3);
-    --shadow-card: 0 8px 32px hsl(250 25% 6% / 0.5);
-    --shadow-elevated: 0 20px 60px hsl(250 25% 6% / 0.6);
-    --shadow-love: 0 0 30px hsl(350 85% 65% / 0.4);
+    /* Shadows - Softer, cat-like */
+    --shadow-glow: 0 0 40px hsl(350 55% 70% / 0.25);
+    --shadow-card: 0 8px 32px hsl(260 20% 6% / 0.4);
+    --shadow-elevated: 0 20px 60px hsl(260 20% 6% / 0.5);
+    --shadow-love: 0 0 30px hsl(350 70% 68% / 0.3);
+    --shadow-paw: 0 4px 12px hsl(350 55% 70% / 0.2);
 
     /* Sidebar */
-    --sidebar-background: 250 25% 8%;
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 340 75% 65%;
-    --sidebar-primary-foreground: 250 25% 6%;
-    --sidebar-accent: 260 20% 15%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 260 20% 20%;
-    --sidebar-ring: 340 75% 65%;
+    --sidebar-background: 260 20% 10%;
+    --sidebar-foreground: 30 50% 97%;
+    --sidebar-primary: 350 55% 70%;
+    --sidebar-primary-foreground: 260 20% 8%;
+    --sidebar-accent: 260 15% 18%;
+    --sidebar-accent-foreground: 30 50% 97%;
+    --sidebar-border: 260 15% 22%;
+    --sidebar-ring: 350 55% 70%;
   }
 }
 
@@ -121,6 +130,7 @@
 
   html {
     font-family: 'Inter', system-ui, sans-serif;
+    letter-spacing: 0.01em;
   }
 
   body {
@@ -135,19 +145,49 @@
 }
 
 @layer components {
-  /* Glass card effect */
+  /* 🐱 Cat-themed glass card effect */
   .glass-card {
-    @apply relative overflow-hidden rounded-2xl border;
+    @apply relative overflow-hidden border;
+    border-radius: calc(var(--radius) + 8px);
     background: var(--glass-bg);
     border-color: var(--glass-border);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
   }
 
+  /* Cat ear corners */
   .glass-card::before {
     content: '';
-    @apply absolute inset-0 pointer-events-none;
-    background: linear-gradient(135deg, hsl(200 100% 55% / 0.05) 0%, transparent 50%);
+    @apply absolute pointer-events-none;
+    top: -8px;
+    left: 12px;
+    width: 16px;
+    height: 16px;
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.15) 50%, transparent 50%);
+    border-radius: 2px 8px 2px 2px;
+    transform: rotate(-15deg);
+  }
+
+  .glass-card::after {
+    content: '';
+    @apply absolute pointer-events-none;
+    top: -8px;
+    right: 12px;
+    width: 16px;
+    height: 16px;
+    background: linear-gradient(-135deg, hsl(var(--primary) / 0.15) 50%, transparent 50%);
+    border-radius: 8px 2px 2px 2px;
+    transform: rotate(15deg);
+  }
+
+  /* Simple glass card without cat ears */
+  .glass-card-simple {
+    @apply relative overflow-hidden border;
+    border-radius: calc(var(--radius) + 8px);
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
   }
 
   /* Glow effects */
@@ -155,8 +195,12 @@
     box-shadow: var(--shadow-glow);
   }
 
+  .glow-paw {
+    box-shadow: var(--shadow-paw);
+  }
+
   .glow-text {
-    text-shadow: 0 0 20px hsl(200 100% 55% / 0.5);
+    text-shadow: 0 0 20px hsl(350 55% 70% / 0.5);
   }
 
   /* Animated gradient text */
@@ -165,33 +209,83 @@
     background-image: var(--gradient-primary);
   }
 
-  /* Breathing animation for focus */
-  .breathing {
-    animation: breathing 4s ease-in-out infinite;
+  /* Cat gradient text */
+  .cat-gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-cat);
   }
 
-  @keyframes breathing {
+  /* 🐱 Cat Breathing animation */
+  .breathing {
+    animation: catBreathing 3s ease-in-out infinite;
+  }
+
+  @keyframes catBreathing {
     0%, 100% {
       transform: scale(1);
-      opacity: 1;
     }
     50% {
-      transform: scale(1.03);
-      opacity: 0.9;
+      transform: scale(1.02);
     }
   }
 
-  /* Pulse glow animation */
+  /* 🐱 Cat purr pulse animation */
   .pulse-glow {
-    animation: pulseGlow 2s ease-in-out infinite;
+    animation: catPurr 2.5s ease-in-out infinite;
   }
 
-  @keyframes pulseGlow {
+  @keyframes catPurr {
     0%, 100% {
-      box-shadow: 0 0 20px hsl(340 75% 65% / 0.3);
+      box-shadow: 0 0 20px hsl(350 55% 70% / 0.2);
     }
     50% {
-      box-shadow: 0 0 40px hsl(340 75% 65% / 0.6);
+      box-shadow: 0 0 35px hsl(350 55% 70% / 0.4);
+    }
+  }
+
+  /* 🐱 Cat tail swish animation */
+  .tail-swish {
+    animation: tailSwish 2s ease-in-out infinite;
+    transform-origin: bottom center;
+  }
+
+  @keyframes tailSwish {
+    0%, 100% {
+      transform: rotate(-5deg);
+    }
+    50% {
+      transform: rotate(5deg);
+    }
+  }
+
+  /* 🐱 Cat paw bounce animation */
+  .paw-bounce {
+    animation: pawBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes pawBounce {
+    0% {
+      transform: scale(0.9);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  /* 🐱 Cat blink animation */
+  .cat-blink {
+    animation: catBlink 4s ease-in-out infinite;
+  }
+
+  @keyframes catBlink {
+    0%, 45%, 55%, 100% {
+      transform: scaleY(1);
+    }
+    50% {
+      transform: scaleY(0.1);
     }
   }
 
@@ -205,13 +299,13 @@
       transform: scale(1);
     }
     15% {
-      transform: scale(1.15);
+      transform: scale(1.12);
     }
     30% {
       transform: scale(1);
     }
     45% {
-      transform: scale(1.1);
+      transform: scale(1.08);
     }
     60% {
       transform: scale(1);
@@ -242,11 +336,11 @@
   @keyframes gentlePulse {
     0%, 100% {
       opacity: 1;
-      box-shadow: 0 0 0 0 hsl(340 75% 65% / 0.4);
+      box-shadow: 0 0 0 0 hsl(350 55% 70% / 0.3);
     }
     50% {
       opacity: 0.9;
-      box-shadow: 0 0 0 10px hsl(340 75% 65% / 0);
+      box-shadow: 0 0 0 8px hsl(350 55% 70% / 0);
     }
   }
 
@@ -288,7 +382,7 @@
 
   /* Floating animation */
   .float {
-    animation: float 6s ease-in-out infinite;
+    animation: float 5s ease-in-out infinite;
   }
 
   @keyframes float {
@@ -296,11 +390,45 @@
       transform: translateY(0);
     }
     50% {
-      transform: translateY(-10px);
+      transform: translateY(-8px);
     }
   }
 
-  /* Shimmer effect - softer */
+  /* 🐱 Cat stretch animation */
+  .cat-stretch {
+    animation: catStretch 3s ease-in-out;
+  }
+
+  @keyframes catStretch {
+    0% {
+      transform: scaleX(1) scaleY(1);
+    }
+    30% {
+      transform: scaleX(1.15) scaleY(0.9);
+    }
+    60% {
+      transform: scaleX(0.95) scaleY(1.1);
+    }
+    100% {
+      transform: scaleX(1) scaleY(1);
+    }
+  }
+
+  /* 🐱 Cat tail chase spinner */
+  .cat-spinner {
+    animation: catSpinner 1.5s linear infinite;
+  }
+
+  @keyframes catSpinner {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Shimmer effect - softer, warmer */
   .shimmer {
     @apply relative overflow-hidden;
   }
@@ -311,10 +439,10 @@
     background: linear-gradient(
       90deg,
       transparent,
-      hsl(340 75% 65% / 0.1),
+      hsl(350 55% 70% / 0.08),
       transparent
     );
-    animation: shimmer 2s infinite;
+    animation: shimmer 2.5s infinite;
   }
 
   @keyframes shimmer {
@@ -334,23 +462,39 @@
     border: 2px solid transparent;
   }
 
-  /* Custom scrollbar */
+  /* 🐱 Paw print indicator */
+  .paw-indicator {
+    position: relative;
+  }
+
+  .paw-indicator::after {
+    content: '🐾';
+    position: absolute;
+    font-size: 0.6rem;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0.7;
+  }
+
+  /* Custom scrollbar - Cat themed */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
   }
 
   ::-webkit-scrollbar-track {
-    background: hsl(222 47% 8%);
+    background: hsl(260 20% 10%);
+    border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: hsl(222 30% 25%);
-    border-radius: 3px;
+    background: linear-gradient(180deg, hsl(350 55% 70% / 0.4), hsl(270 40% 70% / 0.4));
+    border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: hsl(200 100% 55% / 0.5);
+    background: linear-gradient(180deg, hsl(350 55% 70% / 0.6), hsl(270 40% 70% / 0.6));
   }
 }
 
@@ -364,6 +508,14 @@
     background: var(--gradient-card);
   }
 
+  .bg-gradient-cat {
+    background: var(--gradient-cat);
+  }
+
+  .bg-gradient-paw {
+    background: var(--gradient-paw);
+  }
+
   /* Text utilities */
   .text-glow {
     text-shadow: 0 0 20px currentColor;
@@ -372,5 +524,14 @@
   /* Focus ring */
   .focus-ring {
     @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background;
+  }
+
+  /* Cat-themed utilities */
+  .rounded-paw {
+    border-radius: 50% 50% 45% 45%;
+  }
+
+  .rounded-ear {
+    border-radius: 60% 40% 40% 60% / 60% 60% 40% 40%;
   }
 }
