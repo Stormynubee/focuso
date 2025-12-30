@@ -61,6 +61,7 @@ interface CoupleState {
     cooldownMinutes: number;
     customMessages: string[];
     enabledApps: string[];
+    treatYouTubeAsEducational: boolean;
   };
   
   // Actions
@@ -134,6 +135,7 @@ export const useCoupleStore = create<CoupleState>()(
         cooldownMinutes: 5,
         customMessages: DEFAULT_MESSAGES,
         enabledApps: DEFAULT_ENABLED_APPS,
+        treatYouTubeAsEducational: false,
       },
 
       enableCoupleMode: () => set({ isCoupleMode: true }),

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Settings, Clock, MessageSquare, AppWindow, Plus, X, Save, Sparkles } from 'lucide-react';
+import { Settings, Clock, MessageSquare, AppWindow, Plus, X, Save, Sparkles, Youtube, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
@@ -10,15 +10,26 @@ import { useCoupleStore } from '@/store/useCoupleStore';
 import { toast } from 'sonner';
 
 const AVAILABLE_APPS = [
-  'YouTube', 'Instagram', 'TikTok', 'Facebook', 
-  'Twitter', 'WhatsApp', 'Games', 'Netflix', 
-  'Reddit', 'Discord', 'Snapchat'
+  { name: 'YouTube', icon: '📺', special: true },
+  { name: 'Instagram', icon: '📷', special: false },
+  { name: 'TikTok', icon: '🎵', special: false },
+  { name: 'Facebook', icon: '👤', special: false },
+  { name: 'Twitter', icon: '🐦', special: false },
+  { name: 'WhatsApp', icon: '💬', special: false },
+  { name: 'Games', icon: '🎮', special: false },
+  { name: 'Netflix', icon: '🎬', special: false },
+  { name: 'Reddit', icon: '🔥', special: false },
+  { name: 'Discord', icon: '🎙️', special: false },
+  { name: 'Snapchat', icon: '👻', special: false },
 ];
 
 export function CoupleSettings() {
   const { alertSettings, updateAlertSettings } = useCoupleStore();
   const [newMessage, setNewMessage] = useState('');
-  const [localSettings, setLocalSettings] = useState(alertSettings);
+  const [localSettings, setLocalSettings] = useState({
+    ...alertSettings,
+    treatYouTubeAsEducational: alertSettings.treatYouTubeAsEducational ?? false,
+  });
 
   const handleToggleApp = (app: string) => {
     const newApps = localSettings.enabledApps.includes(app)
@@ -76,13 +87,38 @@ export function CoupleSettings() {
             <Sparkles className="w-4 h-4 text-couple" />
             <div>
               <p className="font-medium text-sm">Enable Alerts</p>
-              <p className="text-xs text-muted-foreground">Get notified when partner is distracted</p>
+              <p className="text-xs text-muted-foreground">Auto-detect and notify partner</p>
             </div>
           </div>
           <Switch 
             checked={localSettings.enabled}
             onCheckedChange={(enabled) => setLocalSettings({ ...localSettings, enabled })}
           />
+        </div>
+
+        {/* YouTube Special Setting */}
+        <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 space-y-3">
+          <div className="flex items-center gap-2">
+            <Youtube className="w-4 h-4 text-red-500" />
+            <span className="text-sm font-medium">YouTube Detection</span>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            YouTube is treated as <strong>neutral/informational</strong> by default. 
+            Partner is notified, but it's not marked as a distraction since it might be educational.
+          </p>
+          <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/30">
+            <div className="flex items-center gap-2">
+              <Shield className="w-3 h-3 text-muted-foreground" />
+              <span className="text-xs">Treat as always educational</span>
+            </div>
+            <Switch 
+              checked={localSettings.treatYouTubeAsEducational}
+              onCheckedChange={(value) => setLocalSettings({ ...localSettings, treatYouTubeAsEducational: value })}
+            />
+          </div>
+          <p className="text-[10px] text-muted-foreground italic">
+            When enabled, YouTube won't be logged in distraction analytics.
+          </p>
         </div>
 
         {/* Cooldown Timer */}
@@ -114,17 +150,23 @@ export function CoupleSettings() {
           <div className="flex flex-wrap gap-2">
             {AVAILABLE_APPS.map(app => (
               <motion.button
-                key={app}
-                onClick={() => handleToggleApp(app)}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                  localSettings.enabledApps.includes(app)
-                    ? 'bg-couple/20 text-couple border border-couple/30'
+                key={app.name}
+                onClick={() => handleToggleApp(app.name)}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all flex items-center gap-1.5 ${
+                  localSettings.enabledApps.includes(app.name)
+                    ? app.special 
+                      ? 'bg-red-500/20 text-red-400 border border-red-500/30'
+                      : 'bg-couple/20 text-couple border border-couple/30'
                     : 'bg-secondary/50 text-muted-foreground hover:bg-secondary'
                 }`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {app}
+                <span>{app.icon}</span>
+                {app.name}
+                {app.special && localSettings.enabledApps.includes(app.name) && (
+                  <span className="text-[9px] px-1 py-0.5 rounded bg-background/50">neutral</span>
+                )}
               </motion.button>
             ))}
           </div>
@@ -179,6 +221,15 @@ export function CoupleSettings() {
               <Plus className="w-4 h-4" />
             </Button>
           </div>
+        </div>
+
+        {/* Important Note */}
+        <div className="p-3 rounded-xl bg-primary/10 border border-primary/20">
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            💡 <strong>How it works:</strong> Detection is automatic — no manual input needed. 
+            Your partner is notified instantly when you open a tracked app. 
+            YouTube is always treated as <em>neutral</em> (might be educational).
+          </p>
         </div>
 
         {/* Save Button */}
