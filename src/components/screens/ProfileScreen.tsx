@@ -1,24 +1,37 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { User, GraduationCap, Target, Edit2, Save, Trash2 } from 'lucide-react';
+import { User, GraduationCap, Target, Edit2, Save, Trash2, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { useAppStore } from '@/store/useAppStore';
 import { NotificationSettings } from '@/components/notifications/NotificationSettings';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
 
 export function ProfileScreen() {
-  const { user, updateUser, clearUser, studySessions, distractions, pomodoroSessions } = useAppStore();
+  const { user: localUser, updateUser, clearUser, studySessions, distractions, pomodoroSessions } = useAppStore();
+  const { user: authUser, signOut } = useAuth();
+  const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    name: user?.name || '',
-    age: user?.age?.toString() || '',
-    className: user?.className || '',
-    goal: user?.goal || '',
+    name: localUser?.name || '',
+    age: localUser?.age?.toString() || '',
+    className: localUser?.className || '',
+    goal: localUser?.goal || '',
   });
 
-  if (!user) return null;
+  if (!localUser) return null;
+
+  const handleSignOut = async () => {
+    const { error } = await signOut();
+    if (error) {
+      toast({ title: "Error signing out", variant: "destructive" });
+    } else {
+      toast({ title: "Signed out successfully" });
+    }
+  };
 
   const handleSave = () => {
     updateUser({
@@ -41,7 +54,7 @@ export function ProfileScreen() {
     return `${mins}m`;
   };
 
-  const memberSince = new Date(user.createdAt).toLocaleDateString('en-US', {
+  const memberSince = new Date(localUser.createdAt).toLocaleDateString('en-US', {
     month: 'long',
     year: 'numeric',
   });
@@ -58,14 +71,14 @@ export function ProfileScreen() {
             className="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-accent mx-auto mb-4 flex items-center justify-center text-4xl font-display font-bold text-primary-foreground"
             whileHover={{ scale: 1.05 }}
           >
-            {user.name.charAt(0).toUpperCase()}
+            {localUser.name.charAt(0).toUpperCase()}
           </motion.div>
           
-          <h2 className="text-2xl font-display font-bold mb-1">{user.name}</h2>
-          {user.goal && (
+          <h2 className="text-2xl font-display font-bold mb-1">{localUser.name}</h2>
+          {localUser.goal && (
             <p className="text-muted-foreground flex items-center justify-center gap-2">
               <Target className="w-4 h-4" />
-              {user.goal}
+              {localUser.goal}
             </p>
           )}
           <p className="text-sm text-muted-foreground mt-2">
@@ -142,7 +155,7 @@ export function ProfileScreen() {
                   className="bg-secondary/50"
                 />
               ) : (
-                <p className="text-foreground">{user.name}</p>
+                <p className="text-foreground">{localUser.name}</p>
               )}
             </div>
 
@@ -157,7 +170,7 @@ export function ProfileScreen() {
                     className="bg-secondary/50"
                   />
                 ) : (
-                  <p className="text-foreground">{user.age || 'Not set'}</p>
+                  <p className="text-foreground">{localUser.age || 'Not set'}</p>
                 )}
               </div>
               <div className="space-y-2">
@@ -172,7 +185,7 @@ export function ProfileScreen() {
                     className="bg-secondary/50"
                   />
                 ) : (
-                  <p className="text-foreground">{user.className || 'Not set'}</p>
+                  <p className="text-foreground">{localUser.className || 'Not set'}</p>
                 )}
               </div>
             </div>
@@ -190,7 +203,7 @@ export function ProfileScreen() {
                   placeholder="e.g., JEE Advanced, NEET..."
                 />
               ) : (
-                <p className="text-foreground">{user.goal || 'Not set'}</p>
+                <p className="text-foreground">{localUser.goal || 'Not set'}</p>
               )}
             </div>
           </div>
@@ -206,18 +219,38 @@ export function ProfileScreen() {
         <NotificationSettings />
       </motion.div>
 
+      {/* Account Section */}
+      {authUser && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <GlassCard className="p-6">
+            <h3 className="text-lg font-display font-semibold mb-4">Account</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Signed in as {authUser.email}
+            </p>
+            <Button variant="outline" onClick={handleSignOut}>
+              <LogOut className="w-4 h-4 mr-2" />
+              Sign Out
+            </Button>
+          </GlassCard>
+        </motion.div>
+      )}
+
       {/* Danger Zone */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
+        transition={{ delay: 0.35 }}
       >
         <GlassCard className="p-6 border-destructive/30">
           <h3 className="text-lg font-display font-semibold text-destructive mb-4">
             Danger Zone
           </h3>
           <p className="text-sm text-muted-foreground mb-4">
-            This will delete all your data and reset the app. This action cannot be undone.
+            This will delete all your local data and reset the app. This action cannot be undone.
           </p>
           <Button
             variant="destructive"

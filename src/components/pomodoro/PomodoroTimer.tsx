@@ -436,9 +436,20 @@ export function PomodoroTimer() {
           </Button>
 
           <Button
+            type="button"
             variant="glow"
-            onClick={handlePlayPauseClick}
-            className="w-24 h-24 rounded-full"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log('Fullscreen button clicked, state:', state);
+              if (state === 'focus' || state === 'break') {
+                handlePause();
+              } else {
+                handleStart();
+              }
+            }}
+            className="w-24 h-24 rounded-full cursor-pointer"
+            style={{ pointerEvents: 'auto' }}
           >
             {state === 'focus' || state === 'break' ? (
               <Pause className="w-10 h-10" />
@@ -746,10 +757,21 @@ export function PomodoroTimer() {
         </Button>
 
         <Button
+          type="button"
           variant="glow"
           size="lg"
-          onClick={handlePlayPauseClick}
-          className="w-20 h-20 rounded-full"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Main timer button clicked, state:', state);
+            if (state === 'focus' || state === 'break') {
+              handlePause();
+            } else {
+              handleStart();
+            }
+          }}
+          className="w-20 h-20 rounded-full cursor-pointer relative z-10"
+          style={{ pointerEvents: 'auto' }}
         >
           {state === 'focus' || state === 'break' ? (
             <Pause className="w-8 h-8" />
