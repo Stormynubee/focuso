@@ -10,89 +10,100 @@
 @import '@fontsource/inter/500.css';
 @import '@fontsource/inter/600.css';
 
-/* FocusOS Design System - Dark Futuristic Theme */
+/* FocusOS Design System - Cute Couple Mode Theme */
 
 @layer base {
   :root {
-    /* Core backgrounds - Deep navy/black */
-    --background: 222 47% 4%;
+    /* Core backgrounds - Soft dark with warmth */
+    --background: 250 25% 6%;
     --foreground: 210 40% 98%;
 
     /* Card with glass effect base */
-    --card: 222 47% 8%;
+    --card: 250 25% 10%;
     --card-foreground: 210 40% 98%;
 
     /* Popover */
-    --popover: 222 47% 6%;
+    --popover: 250 25% 8%;
     --popover-foreground: 210 40% 98%;
 
-    /* Primary - Electric Blue */
-    --primary: 200 100% 55%;
-    --primary-foreground: 222 47% 4%;
-    --primary-glow: 200 100% 65%;
+    /* Primary - Soft Pink/Rose */
+    --primary: 340 75% 65%;
+    --primary-foreground: 250 25% 6%;
+    --primary-glow: 340 80% 75%;
 
-    /* Secondary - Subtle dark */
-    --secondary: 222 30% 12%;
+    /* Secondary - Subtle lavender */
+    --secondary: 270 20% 15%;
     --secondary-foreground: 210 40% 98%;
 
     /* Muted */
-    --muted: 222 30% 15%;
-    --muted-foreground: 215 20% 55%;
+    --muted: 260 20% 18%;
+    --muted-foreground: 250 15% 60%;
 
-    /* Accent - Cyan glow */
-    --accent: 180 100% 50%;
-    --accent-foreground: 222 47% 4%;
-    --accent-glow: 180 100% 60%;
+    /* Accent - Soft cyan/teal */
+    --accent: 175 60% 50%;
+    --accent-foreground: 250 25% 6%;
+    --accent-glow: 175 65% 60%;
 
     /* Semantic colors */
-    --destructive: 0 72% 51%;
+    --destructive: 0 65% 55%;
     --destructive-foreground: 210 40% 98%;
 
-    --success: 160 84% 39%;
+    --success: 160 70% 45%;
     --success-foreground: 210 40% 98%;
 
-    --warning: 38 92% 50%;
-    --warning-foreground: 222 47% 4%;
+    --warning: 38 85% 55%;
+    --warning-foreground: 250 25% 6%;
 
     /* Focus/Study specific */
-    --focus: 200 100% 55%;
-    --focus-glow: 200 100% 45%;
-    --distraction: 0 72% 51%;
-    --distraction-glow: 0 72% 40%;
-    --study: 160 84% 39%;
-    --study-glow: 160 84% 30%;
+    --focus: 340 75% 65%;
+    --focus-glow: 340 80% 55%;
+    --distraction: 0 65% 55%;
+    --distraction-glow: 0 65% 45%;
+    --study: 160 70% 45%;
+    --study-glow: 160 70% 35%;
+
+    /* Couple Mode Colors */
+    --couple: 340 75% 65%;
+    --couple-glow: 340 80% 75%;
+    --partner: 280 60% 60%;
+    --partner-glow: 280 65% 70%;
+    --love: 350 85% 65%;
+    --love-glow: 350 90% 75%;
 
     /* Borders */
-    --border: 222 30% 18%;
-    --input: 222 30% 15%;
-    --ring: 200 100% 55%;
+    --border: 260 20% 20%;
+    --input: 260 20% 18%;
+    --ring: 340 75% 65%;
 
     --radius: 1rem;
 
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(200 100% 55%), hsl(180 100% 50%));
-    --gradient-background: radial-gradient(ellipse at top, hsl(222 47% 8%) 0%, hsl(222 47% 4%) 100%);
-    --gradient-card: linear-gradient(135deg, hsl(222 30% 12% / 0.8), hsl(222 47% 8% / 0.6));
-    --gradient-glow: radial-gradient(circle, hsl(200 100% 55% / 0.3) 0%, transparent 70%);
+    /* Gradients - Softer, more romantic */
+    --gradient-primary: linear-gradient(135deg, hsl(340 75% 65%), hsl(280 60% 60%));
+    --gradient-background: radial-gradient(ellipse at top, hsl(250 25% 10%) 0%, hsl(250 25% 6%) 100%);
+    --gradient-card: linear-gradient(135deg, hsl(260 20% 15% / 0.8), hsl(250 25% 10% / 0.6));
+    --gradient-glow: radial-gradient(circle, hsl(340 75% 65% / 0.3) 0%, transparent 70%);
+    --gradient-love: linear-gradient(135deg, hsl(340 75% 65%), hsl(350 85% 65%));
+    --gradient-couple: linear-gradient(135deg, hsl(340 75% 65%), hsl(280 60% 60%), hsl(175 60% 50%));
 
     /* Glass effect */
-    --glass-bg: hsl(222 30% 12% / 0.6);
-    --glass-border: hsl(200 100% 55% / 0.2);
+    --glass-bg: hsl(260 20% 15% / 0.6);
+    --glass-border: hsl(340 75% 65% / 0.2);
 
     /* Shadows */
-    --shadow-glow: 0 0 40px hsl(200 100% 55% / 0.3);
-    --shadow-card: 0 8px 32px hsl(222 47% 4% / 0.5);
-    --shadow-elevated: 0 20px 60px hsl(222 47% 4% / 0.6);
+    --shadow-glow: 0 0 40px hsl(340 75% 65% / 0.3);
+    --shadow-card: 0 8px 32px hsl(250 25% 6% / 0.5);
+    --shadow-elevated: 0 20px 60px hsl(250 25% 6% / 0.6);
+    --shadow-love: 0 0 30px hsl(350 85% 65% / 0.4);
 
     /* Sidebar */
-    --sidebar-background: 222 47% 6%;
+    --sidebar-background: 250 25% 8%;
     --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 200 100% 55%;
-    --sidebar-primary-foreground: 222 47% 4%;
-    --sidebar-accent: 222 30% 12%;
+    --sidebar-primary: 340 75% 65%;
+    --sidebar-primary-foreground: 250 25% 6%;
+    --sidebar-accent: 260 20% 15%;
     --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 222 30% 18%;
-    --sidebar-ring: 200 100% 55%;
+    --sidebar-border: 260 20% 20%;
+    --sidebar-ring: 340 75% 65%;
   }
 }
 
@@ -158,8 +169,8 @@
       opacity: 1;
     }
     50% {
-      transform: scale(1.05);
-      opacity: 0.8;
+      transform: scale(1.03);
+      opacity: 0.9;
     }
   }
 
@@ -170,10 +181,101 @@
 
   @keyframes pulseGlow {
     0%, 100% {
-      box-shadow: 0 0 20px hsl(200 100% 55% / 0.3);
+      box-shadow: 0 0 20px hsl(340 75% 65% / 0.3);
     }
     50% {
-      box-shadow: 0 0 40px hsl(200 100% 55% / 0.6);
+      box-shadow: 0 0 40px hsl(340 75% 65% / 0.6);
+    }
+  }
+
+  /* Heartbeat animation for couple mode */
+  .heartbeat {
+    animation: heartbeat 1.5s ease-in-out infinite;
+  }
+
+  @keyframes heartbeat {
+    0%, 100% {
+      transform: scale(1);
+    }
+    15% {
+      transform: scale(1.15);
+    }
+    30% {
+      transform: scale(1);
+    }
+    45% {
+      transform: scale(1.1);
+    }
+    60% {
+      transform: scale(1);
+    }
+  }
+
+  /* Soft pop animation */
+  .soft-pop {
+    animation: softPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes softPop {
+    0% {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  /* Gentle pulse for partner status */
+  .gentle-pulse {
+    animation: gentlePulse 3s ease-in-out infinite;
+  }
+
+  @keyframes gentlePulse {
+    0%, 100% {
+      opacity: 1;
+      box-shadow: 0 0 0 0 hsl(340 75% 65% / 0.4);
+    }
+    50% {
+      opacity: 0.9;
+      box-shadow: 0 0 0 10px hsl(340 75% 65% / 0);
+    }
+  }
+
+  /* Sparkle effect */
+  .sparkle {
+    position: relative;
+  }
+
+  .sparkle::before,
+  .sparkle::after {
+    content: '✨';
+    position: absolute;
+    font-size: 0.75rem;
+    animation: sparkleFloat 2s ease-in-out infinite;
+  }
+
+  .sparkle::before {
+    top: -8px;
+    left: -8px;
+    animation-delay: 0s;
+  }
+
+  .sparkle::after {
+    bottom: -8px;
+    right: -8px;
+    animation-delay: 1s;
+  }
+
+  @keyframes sparkleFloat {
+    0%, 100% {
+      opacity: 0;
+      transform: translateY(0) scale(0.5);
+    }
+    50% {
+      opacity: 1;
+      transform: translateY(-5px) scale(1);
     }
   }
 
@@ -191,7 +293,7 @@
     }
   }
 
-  /* Shimmer effect */
+  /* Shimmer effect - softer */
   .shimmer {
     @apply relative overflow-hidden;
   }
@@ -202,7 +304,7 @@
     background: linear-gradient(
       90deg,
       transparent,
-      hsl(200 100% 55% / 0.1),
+      hsl(340 75% 65% / 0.1),
       transparent
     );
     animation: shimmer 2s infinite;
@@ -215,6 +317,14 @@
     100% {
       transform: translateX(100%);
     }
+  }
+
+  /* Love gradient border */
+  .love-border {
+    position: relative;
+    background: linear-gradient(var(--background), var(--background)) padding-box,
+                var(--gradient-love) border-box;
+    border: 2px solid transparent;
   }
 
   /* Custom scrollbar */

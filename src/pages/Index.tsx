@@ -8,6 +8,8 @@ import { AnimatedBackground } from '@/components/layout/AnimatedBackground';
 import { DashboardScreen, FocusScreen, AnalyticsScreen } from '@/components/screens/MainScreens';
 import { ProfileScreen } from '@/components/screens/ProfileScreen';
 import { CommunityScreen } from '@/components/screens/CommunityScreen';
+import { CoupleScreen } from '@/components/screens/CoupleScreen';
+import { SpotifyMiniPlayer } from '@/components/music/SpotifyMiniPlayer';
 import { useStudyReminders } from '@/hooks/useStudyReminders';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
