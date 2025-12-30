@@ -9,6 +9,7 @@ import { DashboardScreen, FocusScreen, AnalyticsScreen } from '@/components/scre
 import { ProfileScreen } from '@/components/screens/ProfileScreen';
 import { CommunityScreen } from '@/components/screens/CommunityScreen';
 import { CoupleScreen } from '@/components/screens/CoupleScreen';
+import { TasksScreen } from '@/components/screens/TasksScreen';
 import { SpotifyMiniPlayer } from '@/components/music/SpotifyMiniPlayer';
 import { useStudyReminders } from '@/hooks/useStudyReminders';
 import { useAuth } from '@/hooks/useAuth';
@@ -62,6 +63,7 @@ const Index = () => {
           >
             {activeTab === 'dashboard' && <DashboardScreen />}
             {activeTab === 'focus' && <FocusScreen />}
+            {activeTab === 'tasks' && <TasksScreen />}
             {activeTab === 'couple' && <CoupleScreen />}
             {activeTab === 'community' && <CommunityScreen />}
             {activeTab === 'analytics' && <AnalyticsScreen />}

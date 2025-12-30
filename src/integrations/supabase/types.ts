@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      couple_connections: {
+        Row: {
+          created_at: string
+          id: string
+          link_code: string | null
+          partner_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          link_code?: string | null
+          partner_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          link_code?: string | null
+          partner_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       messages: {
         Row: {
           content: string
@@ -56,6 +83,36 @@ export type Database = {
           },
         ]
       }
+      partner_status: {
+        Row: {
+          id: string
+          last_seen: string
+          pomodoro_active: boolean
+          pomodoro_time_left: number | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          last_seen?: string
+          pomodoro_active?: boolean
+          pomodoro_time_left?: number | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          last_seen?: string
+          pomodoro_active?: boolean
+          pomodoro_time_left?: number | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -81,6 +138,39 @@ export type Database = {
           display_name?: string
           id?: string
           total_study_minutes?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      todos: {
+        Row: {
+          completed: boolean
+          created_at: string
+          emoji: string | null
+          id: string
+          priority: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean
+          created_at?: string
+          emoji?: string | null
+          id?: string
+          priority?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed?: boolean
+          created_at?: string
+          emoji?: string | null
+          id?: string
+          priority?: string | null
+          title?: string
           updated_at?: string
           user_id?: string
         }

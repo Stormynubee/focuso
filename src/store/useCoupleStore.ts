@@ -96,6 +96,12 @@ interface CoupleState {
   
   // Settings
   updateAlertSettings: (settings: Partial<CoupleState['alertSettings']>) => void;
+  
+  // Realtime sync setters
+  setIsConnected: (connected: boolean) => void;
+  setPartnerName: (name: string) => void;
+  setLinkCode: (code: string | null) => void;
+  setPartnerStatus: (status: PartnerStatus) => void;
 }
 
 const generateId = () => Math.random().toString(36).substring(2, 15);
@@ -262,6 +268,21 @@ export const useCoupleStore = create<CoupleState>()(
 
       updateAlertSettings: (settings) => set((state) => ({
         alertSettings: { ...state.alertSettings, ...settings },
+      })),
+
+      // Realtime sync setters
+      setIsConnected: (connected) => set({ isConnected: connected }),
+      
+      setPartnerName: (name) => set((state) => ({
+        partner: state.partner 
+          ? { ...state.partner, name } 
+          : { id: '', name, avatarEmoji: '💕', status: 'offline' as PartnerStatus, pomodoroActive: false, focusStreak: 0, lastSeen: new Date() }
+      })),
+      
+      setLinkCode: (code) => set({ linkCode: code }),
+      
+      setPartnerStatus: (status) => set((state) => ({
+        partner: state.partner ? { ...state.partner, status, lastSeen: new Date() } : null,
       })),
     }),
     {
