@@ -6,10 +6,15 @@ import { PartnerStatusWidget } from '@/components/couple/PartnerStatus';
 import { CoupleChat } from '@/components/couple/CoupleChat';
 import { CoupleSettings } from '@/components/couple/CoupleSettings';
 import { StudyTogetherPomodoro } from '@/components/couple/StudyTogetherPomodoro';
+import { AutoDetectionStatus } from '@/components/distraction/AutoDetectionStatus';
+import { DistractionTestPanel } from '@/components/distraction/DistractionTestPanel';
 import { useCoupleStore } from '@/store/useCoupleStore';
+import { useDistractionMonitor } from '@/hooks/useDistractionMonitor';
 import { Button } from '@/components/ui/button';
 
 export function CoupleScreen() {
+  // Initialize the distraction monitor when CoupleScreen mounts
+  useDistractionMonitor();
   const { isCoupleMode, isConnected } = useCoupleStore();
   const [showSettings, setShowSettings] = useState(false);
 
@@ -69,9 +74,23 @@ export function CoupleScreen() {
         </motion.div>
       )}
 
-      {/* Couple Chat (when connected) */}
+      {/* Auto-Detection Status */}
+      {isConnected && (
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
+          <AutoDetectionStatus />
+        </motion.div>
+      )}
+
+      {/* Detection Test Panel */}
       {isConnected && (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
+          <DistractionTestPanel />
+        </motion.div>
+      )}
+
+      {/* Couple Chat (when connected) */}
+      {isConnected && (
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }}>
           <CoupleChat />
         </motion.div>
       )}
